@@ -19,16 +19,15 @@ def devide(num1,num2):
 
 def main():
 	#If true, operation will not require input. If False, operation will require input
-	debug = False
+	debug = True
 
 	if debug:
-		operation = "+"
+		operation = "*"
 	else:
-		operation = input("What calculation would you like to use? Please chose one (+,-,*,/):")
+		operation = raw_input("What calculation would you like to use? Please chose one (+,-,*,/):")
 
-	if (operation != "+") or (operation != "-") or (operation != "*") or (operation != "/"): #invalid operation
-		print("you must enter a valid operation")
-	else: # do the operation
+	 
+	if (operation == "+") or (operation == "-") or (operation == "*") or (operation == "/"): # do the operation
 		num1 = input("enter the first number:")
 		num2 = input("enter the second  number:")
 		if(operation == "+"):
@@ -41,5 +40,8 @@ def main():
 			print(devide(num1,num2 ))
 		else:
 			print("invalid input")
+	else: 
+		#invalid operation
+		print("you must enter a valid operation")
 main() 
 
