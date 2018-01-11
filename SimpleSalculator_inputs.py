@@ -19,7 +19,7 @@ def devide(num1,num2):
 
 def main():
 	#If true, operation will not require input. If False, operation will require input
-	debug = True
+	debug = False
 
 	if debug:
 		operation = "+"
