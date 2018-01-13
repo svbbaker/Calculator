@@ -16,50 +16,66 @@ def multiply(num1,num2):
 def devide(num1,num2):
 	return  num1 / num2
 
-def multiplyArray(array): #mutiply the pieces in the array (take it as an int not as a sting)
+def addArray(array):
+	return add(int(array[0]),int(array[1]))
+
+def subtractArray(array):
+	return subtract(int(array[0]),int(array[1]))
+
+def multiplyArray(array):
+	#for i in range(0,5) #between the numer or parts of the array - NEEDS WORK
+	return multiply(int(array[0]),int(array[1]))
+#def multiplyArray(array): #mutiply the pieces in the array (take it as an int not as a sting)
 	#for i in range(0,5):#between the numer or parts of the array
-	result = 0
-	result = multiply(int(array[0]),int(array[1])
-	return result
+	#return multiply(int(array[0]),int(array[1])
+
+def devideArray(array):
+	return devide(int(array[0]),int(array[1]))
+
 def main():
+
 	#If true, operation will not require input. If False, operation will require input
 	debug = True
 
 	if debug:
-		operation = "5*2"
+		operation = "66+6"
 	else:
 		operation = raw_input("What calculation would you like to complete:")
 
-	if "*" in operation:
+	if "+" in operation:
+		split = operation.split("+")
+		#print(split)
+		result = addArray(split)
+
+	elif "-" in operation:
+		split = operation.split("-")
+		#print(split)
+		result = subtractArray(split)
+
+
+	elif "*" in operation:
 		split = operation.split("*")
-		print(split)
+		#print(split)
 		result = multiplyArray(split)
 
-		answer = 1
+		#answer = 1
 
 		#for value in split:
 			#answer = multiply(answer, int(value))
 
 		#result = answer
 
+	elif "/" in operation:
+		split = operation.split("/")
+		#print(split)
+		result = devideArray(split)
+
+	else: print("Error")
+
 	return result
 	 
-	#if (operation == "+") or (operation == "-") or (operation == "*") or (operation == "/"): # do the operation
-		#num1 = input("enter the first number:")
-		#num2 = input("enter the second  number:")
-		#if(operation == "+"):
-		#	print(add(num1,num2 ))
-		#elif(operation == "-"):
-		#	print(subtract(num1,num2 ))
-		#elif(operation == "*"):
-		#	print(multiply(num1,num2 ))
-		#elif(operation == "/"):
-		#	print(devide(num1,num2 ))
-		#else:
-		#	print("invalid input")
-	#else: 
-		#invalid operation
-		#print("you must enter a valid operation")
 
-main() 
+print(main()) 
+
+
 
