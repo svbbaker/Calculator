@@ -16,6 +16,7 @@ def multiply(num1,num2):
 def devide(num1,num2):
 	return  num1 / num2
 
+#Arrays call on caluculatons, to calulate mutliple variables:
 def addArray(array):
 	return add(int(array[0]),int(array[1]))
 
@@ -32,50 +33,76 @@ def multiplyArray(array):
 def devideArray(array):
 	return devide(int(array[0]),int(array[1]))
 
+
+#main() calls on calculations
 def main():
 
 	#If true, operation will not require input. If False, operation will require input
 	debug = True
 
 	if debug:
-		operation = "66+6"
+		operation = "66-21-2-7-12-4-9"
 	else:
 		operation = raw_input("What calculation would you like to complete:")
 
+
 	if "+" in operation:
 		split = operation.split("+")
-		#print(split)
 		result = addArray(split)
+
+		answer = 1
+
+		for value in split:
+			answer = add(answer, int(value))
+
+		result = answer
+
 
 	elif "-" in operation:
 		split = operation.split("-")
-		#print(split)
 		result = subtractArray(split)
+
+		answer = 1
+
+		for value in split:
+			answer = subtract(answer, int(value))
+
+		result = answer
 
 
 	elif "*" in operation:
 		split = operation.split("*")
-		#print(split)
 		result = multiplyArray(split)
 
-		#answer = 1
+		answer = 1
 
-		#for value in split:
-			#answer = multiply(answer, int(value))
+		for value in split:
+			answer = multiply(answer, int(value))
 
-		#result = answer
+		result = answer
+
 
 	elif "/" in operation:
 		split = operation.split("/")
-		#print(split)
 		result = devideArray(split)
 
-	else: print("Error")
+		answer = 1
+
+		for value in split:
+			answer = devide(answer, int(value))
+
+		result = answer
+
+
+	else: resutl = "Error"
+
+	#results of main()
+	print(result)
 
 	return result
 	 
-
-print(main()) 
+#Calling on funtion main()
+main()
 
 
 
