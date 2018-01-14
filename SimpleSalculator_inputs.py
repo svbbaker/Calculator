@@ -38,10 +38,10 @@ def devideArray(array):
 def main():
 
 	#If true, operation will not require input. If False, operation will require input
-	debug = False
+	debug = True
 
 	if debug:
-		operation = "66-21-2-7-12-4-9"
+		operation = "9*2"
 	else:
 		operation = input("What calculation would you like to complete:") #or raw_input ?
 
@@ -65,7 +65,7 @@ def main():
 		answer = 0
 
 		for value in split:
-			answer = subtract(answer, int(value))
+			answer = subtract(result, int(value)) #if there are only two number subtracts the last number twice
 
 		result = answer
 
@@ -74,7 +74,7 @@ def main():
 		split = operation.split("*")
 		result = multiplyArray(split)
 
-		answer = 0
+		answer = 1
 
 		for value in split:
 			answer = multiply(answer, int(value))
@@ -86,10 +86,10 @@ def main():
 		split = operation.split("/")
 		result = devideArray(split)
 
-		answer = 0
+		answer = 1
 
 		for value in split:
-			answer = devide(answer, int(value))
+			answer = devide(answer, int(value)) #does evything worng...
 
 		result = answer
 
@@ -103,6 +103,4 @@ def main():
 	 
 #Calling on funtion main()
 main()
-
-
 
