@@ -1,3 +1,6 @@
+import re
+
+
 print("welcome to calculator.py")
 
 #returns the summ of two numbers
@@ -36,72 +39,32 @@ def divideArray(array):
 
 #main() calls on calculations
 def main():
-
-	#If true, operation will not require input. If False, operation will require input
+	
 	debug = True
 
 	if debug:
-		operation = "9/2"
+		operation = "18.2-93/2*2.5+21*5-2" #does not work for more than 1 multiplication sign but not for one either
 	else:
 		operation = input("What calculation would you like to complete:") #or raw_input ?
 
-	print(operation + "=")
-
-	if "+" in operation:
-		split = operation.split("+")
-		result = addArray(split)
-
+	while '*':
+		firstMultiplier = re.findall("\(?\d+\.?\d+\)?\*",operation)[0]
+		secondMultiplier = re.findall("\*\(?\d+\.?\d+\)?",operation)[0]
 		answer = 0
+		
+		print(firstMultiplier)
+		print(secondMultiplier)
 
-		for value in split:
-			answer = add(answer, int(value))
+		answer = multiply(firstMultiplier,secondMultiplier)
 
-		result = answer
+		newstring = operation.replace("\(?\d+\.?\d+\)?\*"+"\*\(?\d+\.?\d+\)?", answer)
 
+		return newstring
 
-	elif "-" in operation:
-		split = operation.split("-")
-		result = subtractArray(split)
-
-		answer = 0
-
-		for value in split:
-			answer = subtract(result, int(value)) #if there are only two number subtracts the last number twice
-
-		result = answer
-
-
-	elif "*" in operation:
-		split = operation.split("*")
-		result = multiplyArray(split)
-
-		answer = 1
-
-		for value in split:
-			answer = multiply(answer, int(value))
-
-		result = answer
-
-
-	elif "/" in operation:
-		split = operation.split("/")
-		#result = divideArray(split)
-
-		answer = reslut[0]
-
-		for value in split:
-			answer = divide(answer, int(value)) #does evything worng...
-
-		result = answer
-
-
-	else: resutl = "Error"
-
-	#results of main()
-	print(result)
+	result = 1
 
 	return result
 	 
 #Calling on funtion main()
-main()
+print(main())
 
