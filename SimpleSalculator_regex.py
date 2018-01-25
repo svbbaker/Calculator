@@ -21,20 +21,16 @@ def divide(num1,num2):
 
 #Arrays call on caluculatons, to calulate mutliple variables:
 def addArray(array):
-	return add(int(array[0]),int(array[1]))
+	return add(float(array[0]),float(array[1]))
 
 def subtractArray(array):
-	return subtract(int(array[0]),int(array[1]))
+	return subtract(float(array[0]),float(array[1]))
 
 def multiplyArray(array):
-	#for i in range(0,5) #between the numer or parts of the array - NEEDS WORK
-	return multiply(int(array[0]),int(array[1]))
-#def multiplyArray(array): #mutiply the pieces in the array (take it as an int not as a sting)
-	#for i in range(0,5):#between the numer or parts of the array
-	#return multiply(int(array[0]),int(array[1])
+	return multiply(float(array[0]),float(array[1]))
 
 def divideArray(array):
-	return divide(int(array[0]),int(array[1]))
+	return divide(float(array[0]),float(array[1]))
 
 
 #main() calls on calculations
@@ -50,12 +46,11 @@ def main():
 	while '*':
 		firstMultiplier = re.findall("\(?\d+\.?\d+\)?\*",operation)[0]
 		secondMultiplier = re.findall("\*\(?\d+\.?\d+\)?",operation)[0]
-		answer = 0
-		
+
 		print(firstMultiplier)
 		print(secondMultiplier)
 
-		answer = multiply(firstMultiplier,secondMultiplier)
+		answer = multiply(float(firstMultiplier.split(None, 1)),float(secondMultiplier).split(None, 1))
 
 		newstring = operation.replace("\(?\d+\.?\d+\)?\*"+"\*\(?\d+\.?\d+\)?", answer)
 
