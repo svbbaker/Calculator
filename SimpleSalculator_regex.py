@@ -43,22 +43,20 @@ def main():
 	else:
 		operation = input("What calculation would you like to complete:") #or raw_input ?
 
-	while '*':
-		firstMultiplier = re.findall("\(?\d+\.?\d+\)?\*",operation)[0]
-		secondMultiplier = re.findall("\*\(?\d+\.?\d+\)?",operation)[0]
+	while '*' in operation:
+		firstMultiplier = re.findall("(\(?\d+\.?\d*\)?)\*",operation)[0]
+		secondMultiplier = re.findall("\*(\(?\d+\.?\d*\)?)",operation)[0]
 
 		print(firstMultiplier)
 		print(secondMultiplier)
 
-		answer = multiply(float(firstMultiplier.split(None, 1)),float(secondMultiplier).split(None, 1))
+		answer = multiply(float(firstMultiplier),float(secondMultiplier))
+		print(answer)
+		operation = operation.replace(firstMultiplier + "*" + secondMultiplier, str(answer))
 
-		newstring = operation.replace("\(?\d+\.?\d+\)?\*"+"\*\(?\d+\.?\d+\)?", answer)
+	return operation
 
-		return newstring
-
-	result = 1
-
-	return result
+	
 	 
 #Calling on funtion main()
 print(main())
