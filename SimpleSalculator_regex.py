@@ -21,7 +21,7 @@ def divide(num1,num2):
 	return  num1 / num2
 
 
-#Arrays call on caluculatons, to calulate mutliple variables:
+#Strings call on operations to calulate mutliple variables using Regex
 def addWhile(string):
 	print("Addition:")
 	while '+' in string:
@@ -38,7 +38,7 @@ def addWhile(string):
 
 	return string
 
-def subtractWhile(string):
+def subtractWhile(string): #MINUS SIGNS...? 
 	print("Subtract:")
 	while '-' in string:
 		firstSubtractor = re.findall("(\(?\d+\.?\d*\)?)\-",string)[0]
@@ -89,8 +89,8 @@ def divideWhile(string):
 	
 print("welcome to calculator.py")
 
-
-debug = False
+#inputs
+debug = True
 
 if debug:
 	operation = "18.2-93/2*2.5+21*5-2+5"
