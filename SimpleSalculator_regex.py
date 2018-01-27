@@ -3,6 +3,7 @@
 #January 2018
 
 import re
+import numpy as np
 
 #returns the summ of two numbers
 def add(num1,num2):
@@ -38,7 +39,7 @@ def addWhile(string):
 
 	return string
 
-def subtractWhile(string): #MINUS SIGNS...? 
+def subtractWhile(string):
 	print("Subtract:")
 	while '-' in string:
 		firstSubtractor = re.findall("(\(?\d+\.?\d*\)?)\-",string)[0]
@@ -53,6 +54,26 @@ def subtractWhile(string): #MINUS SIGNS...?
 		print("string = " + string)
 
 	return string
+
+def sumAll(string):
+	print("Addition & Subtraction:")
+	for i in string:
+		if i == '+' or i == '-' in string:
+			posList = re.findall("\+(\(?\d+\.?\d*\)?)",string)
+			negList = re.findall("(\-\(?\d+\.?\d*\)?)", string)
+			print("posList: " + str(posList))
+			print("negList: " + str(negList))
+
+			posAnswer = sum(float(x) for x in posList)
+			negAnswer = sum(float(x) for x in negList)
+			print("posSum = " + str(posAnswer))
+			print("negSum = " + str(negAnswer))
+
+			answer = add(posAnswer,negAnswer)
+			print(str(posAnswer) + " + " + str(negAnswer) + " = " + str(answer))
+			print("answer = " + str(answer))
+			break #how do I make it only itterate once rather than having to break it
+	return answer
 
 def multiplyWhile(string):
 	print("Multiplication:")
@@ -86,6 +107,7 @@ def divideWhile(string):
 
 	return string
 
+
 	
 print("welcome to calculator.py")
 
@@ -93,12 +115,13 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "18.2-93/2*2.5+21*5-2+5"
+	operation = "18.2-93/2*2.5+21*5*2+5-11/21+3"
 else:
 	operation = input("What calculation would you like to complete:")
 
 #performing calulations in order of operation:	
 operation = multiplyWhile(operation)
 operation = divideWhile(operation)
-print("the answer to your calculation is: " + operation)
+operation = sumAll(operation)
+print("the answer to your calculation is: " + str(operation))
 
