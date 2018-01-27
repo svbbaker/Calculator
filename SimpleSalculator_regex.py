@@ -5,14 +5,6 @@
 import re
 import numpy as np
 
-#returns the summ of two numbers
-def add(num1,num2):
-	return  num1 + num2
-
-#returns the difference of two numbers
-def subtract(num1,num2):
-	return  num1 - num2
-
 #returns the pruduct (*) of two numbers
 def multiply(num1,num2):
 	return  num1 * num2
@@ -23,55 +15,26 @@ def divide(num1,num2):
 
 
 #Strings call on operations to calulate mutliple variables using Regex
-def addWhile(string):
-	print("Addition:")
-	while '+' in string:
-		firstAdder = re.findall("(\(?\d+\.?\d*\)?)\+",string)[0]
-		secondAdder = re.findall("\+(\(?\d+\.?\d*\)?)",string)[0]
-
-		print("var1 = " + firstAdder)
-		print("var2 = " + secondAdder)
-
-		answer = add(float(firstAdder),float(secondAdder))
-		print("answer = " + str(answer))
-		string = string.replace(firstAdder + "+" + secondAdder, str(answer))
-		print("string = " + string)
-
-	return string
-
-def subtractWhile(string):
-	print("Subtract:")
-	while '-' in string:
-		firstSubtractor = re.findall("(\(?\d+\.?\d*\)?)\-",string)[0]
-		secondSubtractor = re.findall("\-(\(?\d+\.?\d*\)?)",string)[0]
-
-		print("var1 = " + firstSubtractor)
-		print("var2 = " + secondSubtractor)
-
-		answer = subtract(float(firstSubtractor),float(secondSubtractor))
-		print("answer = " + str(answer))
-		string = string.replace(firstSubtractor + "-" + secondSubtractor, str(answer))
-		print("string = " + string)
-
-	return string
-
 def sumAll(string):
 	print("Addition & Subtraction:")
 	for i in string:
 		if i == '+' or i == '-' in string:
-			posList = re.findall("\+(\(?\d+\.?\d*\)?)",string)
-			negList = re.findall("(\-\(?\d+\.?\d*\)?)", string)
-			print("posList: " + str(posList))
-			print("negList: " + str(negList))
+			#posList = re.findall("\+(\(?\d+\.?\d*\)?)",string)
+			#negList = re.findall("(\-\(?\d+\.?\d*\)?)", string)
+			List = re.findall("(\-?\(?\d+\.?\d*\)?)", string)
+			#print("posList: " + str(posList))
+			#print("negList: " + str(negList))
+			print("firstNum: " + str(List))
 
-			posAnswer = sum(float(x) for x in posList)
-			negAnswer = sum(float(x) for x in negList)
-			print("posSum = " + str(posAnswer))
-			print("negSum = " + str(negAnswer))
+			#posAnswer = sum(float(x) for x in posList)
+			#negAnswer = sum(float(x) for x in negList)
+			#print("posSum = " + str(posAnswer))
+			#print("negSum = " + str(negAnswer))
 
-			answer = add(posAnswer,negAnswer)
-			print(str(posAnswer) + " + " + str(negAnswer) + " = " + str(answer))
-			print("answer = " + str(answer))
+			#answer1 = add(posAnswer,negAnswer)
+			answer = sum(float(x) for x in List)
+			#print(str(posAnswer) + " + " + str(negAnswer) + " = " + str(answer1))
+			print("answer = " + str(answer))# + str(answer1) + " or " + str(answer))
 			break #how do I make it only itterate once rather than having to break it
 	return answer
 
@@ -115,7 +78,7 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "18.2-93/2*2.5+21*5*2+5-11/21+3"
+	operation = "18.2-93/2*2.5+21*5*2+5-15/3+3"
 else:
 	operation = input("What calculation would you like to complete:")
 
@@ -123,5 +86,6 @@ else:
 operation = multiplyWhile(operation)
 operation = divideWhile(operation)
 operation = sumAll(operation)
-print("the answer to your calculation is: " + str(operation))
+
+print("the answer to your calculation is: " + str(operation)) #EACH PIECE IS CORRECT BUT NOT WHEN TOGETHER!!!!!!
 
