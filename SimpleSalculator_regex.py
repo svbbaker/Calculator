@@ -36,6 +36,10 @@ def sumAll(string):
 			#print(str(posAnswer) + " + " + str(negAnswer) + " = " + str(answer1))
 			print("answer = " + str(answer))# + str(answer1) + " or " + str(answer))
 			break #how do I make it only itterate once rather than having to break it
+		else:
+			print("no addition or subtraction")
+			answer = string
+			break
 	return answer
 
 def multiplyWhile(string):
@@ -78,14 +82,18 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "18.2-93/2*2.5+21*5*2+5-15/3+3"
+	operation = "18.2+27/8*12/3+2*0.4+9"
 else:
 	operation = input("What calculation would you like to complete:")
 
 #performing calulations in order of operation:	
-operation = multiplyWhile(operation)
-operation = divideWhile(operation)
-operation = sumAll(operation)
+operation1 = multiplyWhile(operation)
+operation2 = divideWhile(operation1) #GET RID OF THE op.123 WHEN GET RID OF PRINTS
+operation3 = sumAll(operation2)
+print("answers:")
+print(operation1)
+print(operation2)
+print(operation3)
 
-print("the answer to your calculation is: " + str(operation)) #EACH PIECE IS CORRECT BUT NOT WHEN TOGETHER!!!!!!
+print("the answer to your calculation is: " + str(operation3)) #EACH PIECE IS CORRECT BUT NOT WHEN TOGETHER!!!!!!
 
