@@ -28,8 +28,8 @@ def exp(string):
 def md(string):
 	print("Multiplication & Division:")
 	while '*' in string or '/' in string:
-		var1 = re.findall("(\(?\d+\.?\d*\)?)[\*\/]",string)[0]
-		var2 = re.findall("[\*\/](\(?\d+\.?\d*\)?)",string)[0]
+		var1 = re.findall("(\-?\(?\d+\.?\d*\)?)[\*\/]",string)[0]
+		var2 = re.findall("[\*\/](\-?\(?\d+\.?\d*\)?)",string)[0]
 		operator = re.findall("[\*\/]",string)[0]
 
 		#print("var1 = " + var1)
@@ -67,6 +67,24 @@ def sumAll(string):
 	
 	return answer
 
+def parenth(string):
+	print("Parenthisis:")
+	while '(' in string or ')' in string:
+		part = re.findall("\(([^\)]+)\)",string)[0]
+		print("part: " + part)
+
+		
+		answer = parenth(part)
+		answer = exp(answer)
+		answer = md(answer)
+		answer = sumAll(answer)
+		
+		string = string.replace("(" + part + ")", str(answer))
+
+	print("string = " + string)
+
+	return string
+
 	
 print("welcome to calculator.py")
 
@@ -74,11 +92,12 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "4^3*2+1/5*7-4"
+	operation = "4^3*(2+1/5*7-4)+(3*4-4/2)"
 else:
 	operation = input("What calculation would you like to complete:")
 
 #performing calulations in order of operation:	
+operation = parenth(operation)
 operation = exp(operation)
 operation = md(operation)
 operation = sumAll(operation)
