@@ -5,6 +5,51 @@
 import re
 
 #Strings call on operations to calulate mutliple variables using Regex
+def exp(string):
+	print("Exponents:")
+	while '^' in string:
+		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
+		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
+
+		#print("var1 = " + var1)
+		#print("var2 = " + var2)
+
+		answer = float(var1) ** float(var2)
+		#print("answer = " + str(answer))
+		
+		string = string.replace(var1 + "^" + var2, str(answer))
+
+		#print("string = " + string)
+
+	print("string = " + string)
+
+	return string
+
+def md(string):
+	print("Multiplication & Division:")
+	while '*' in string or '/' in string:
+		var1 = re.findall("(\(?\d+\.?\d*\)?)[\*\/]",string)[0]
+		var2 = re.findall("[\*\/](\(?\d+\.?\d*\)?)",string)[0]
+		operator = re.findall("[\*\/]",string)[0]
+
+		#print("var1 = " + var1)
+		#print("var2 = " + var2)
+		#print("operation: " + operator)
+
+		if operator == '*':
+			answer = float(var1) * float(var2)
+			#print("answer = " + str(answer))
+		elif operator == '/':
+			answer = float(var1)/float(var2)
+			#print("answer = " + str(answer))
+		
+		string = string.replace(var1 + operator + var2, str(answer))
+		#print("string = " + string)
+
+	print("string = " + string)
+
+	return string
+
 def sumAll(string):
 	print("Addition & Subtraction:")
 	#check if string contains + or - if not return answer
@@ -12,7 +57,7 @@ def sumAll(string):
 		for i in string:
 			if i == '+' in string or i == '-' in string:
 				List = re.findall("(\-?\(?\d+\.?\d*\)?)", string)
-				print("List: " + str(List))
+				#print("List: " + str(List))
 				answer = sum(float(x) for x in List)
 				print("answer = " + str(answer))
 				break
@@ -22,30 +67,6 @@ def sumAll(string):
 	
 	return answer
 
-def mdWhile(string):
-	print("Multiplication & Division:")
-	while '*' in string or '/' in string:
-		var1 = re.findall("(\(?\d+\.?\d*\)?)[\*\/]",string)[0]
-		var2 = re.findall("[\*\/](\(?\d+\.?\d*\)?)",string)[0]
-		operator = re.findall("[\*\/]",string)[0]
-
-		print("var1 = " + var1)
-		print("var2 = " + var2)
-		print("operation: " + operator)
-
-		if operator == '*':
-			answer = float(var1) * float(var2)
-			print("answer = " + str(answer))
-		elif operator == '/':
-			answer = float(var1)/float(var2)
-			print("answer = " + str(answer))
-		
-		string = string.replace(var1 + operator + var2, str(answer))
-
-		print("string = " + string)
-
-	return string
-
 	
 print("welcome to calculator.py")
 
@@ -53,12 +74,13 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "18.2*27-3/8*12/32*0.43+13"
+	operation = "4^3*2+1/5*7-4"
 else:
 	operation = input("What calculation would you like to complete:")
 
 #performing calulations in order of operation:	
-operation = mdWhile(operation)
+operation = exp(operation)
+operation = md(operation)
 operation = sumAll(operation)
 
 print("the answer to your calculation is: " + str(operation))
