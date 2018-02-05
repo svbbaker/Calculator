@@ -9,7 +9,7 @@ import re
 def exp(string):
 	print("Exponents:")
 	while '^' in string:
-		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0] #^[\e\+\d+]
+		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
 		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
 
 		#print("var1 = " + var1)
@@ -58,7 +58,7 @@ def sumAll(string):
 	if '+' in string or '-' in string:
 		for i in string:
 			if i == '+' in string or i == '-' in string:
-				List = re.findall("(\-?\(?\d+\.?\d*\)?)", string)
+				List = re.findall("(\-?\d\.?\d*e\+\d+|\-?\(?\d+\.?\d*\)?)", string) #does not add to d+ after e
 				print("List: " + str(List))
 				answer = sum(float(x) for x in List)
 				print("answer = " + str(answer))
@@ -104,7 +104,7 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "(3*5)^(5+3)-100/2+15"
+	operation = "(3*55)^(55+3)+100/2+15"
 else:
 	operation = input("What calculation would you like to complete:")
 
