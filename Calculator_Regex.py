@@ -92,7 +92,7 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "4^3*(2+1/5*7-4)+(3*4-4/2)"
+	operation = "(3*865)^5"
 else:
 	operation = input("What calculation would you like to complete:")
 
