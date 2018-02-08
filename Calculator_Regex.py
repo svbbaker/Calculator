@@ -4,7 +4,8 @@
 
 import re
 
-#Strings call on operations to calulate mutliple variables using Regex
+#Strings call on operations to calulate mutliple variables using Regex:
+#Exponents
 def exp(string):
 	print("Exponents:")
 	while '^' in string:
@@ -25,6 +26,7 @@ def exp(string):
 
 	return string
 
+#Multiplication and Division
 def md(string):
 	print("Multiplication & Division:")
 	while '*' in string or '/' in string:
@@ -50,15 +52,15 @@ def md(string):
 
 	return string
 
+#Addition and Subtraction
 def sumAll(string):
 	print("Addition & Subtraction:")
-	#check if string contains + or - if not return answer
 	if '+' in string or '-' in string:
 		for i in string:
 			if i == '+' in string or i == '-' in string:
-				List = re.findall("(\-?\(?\d+\.?\d*\)?)", string)
-				#print("List: " + str(List))
-				answer = sum(float(x) for x in List)
+				line = re.findall("(\-?\d\.?\d*e\+\d+|\-?\(?\d+\.?\d*\)?)", string)
+				print("List: " + str(line))
+				answer = sum(float(x) for x in line)
 				print("answer = " + str(answer))
 				break
 	else:
@@ -67,6 +69,7 @@ def sumAll(string):
 	
 	return answer
 
+#Parenthisis
 def parenth(string):
 	print("Parenthisis:")
 	while '(' in string or ')' in string:
@@ -85,14 +88,23 @@ def parenth(string):
 
 	return string
 
-	
+#Solving for x
+def solveX(string):
+	print("Solving for x")
+
+
+	print("string = " + string)
+
+	return string
+
+
 print("welcome to calculator.py")
 
 #inputs
 debug = True
 
 if debug:
-	operation = "(3*865)^5"
+	operation = "1.4e+6+15-3"
 else:
 	operation = input("What calculation would you like to complete:")
 

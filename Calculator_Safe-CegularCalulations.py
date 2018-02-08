@@ -58,9 +58,9 @@ def sumAll(string):
 	if '+' in string or '-' in string:
 		for i in string:
 			if i == '+' in string or i == '-' in string:
-				List = re.findall("(\-?\d\.?\d*e\+|\-?\(?\d+\.?\d*\)?)", string) #does not add to d+ after e
-				print("List: " + str(List))
-				answer = sum(float(x) for x in List) #how do I make it not want to add the piece where e is
+				line = re.findall("(\-?\d\.?\d*e\+\d+|\-?\(?\d+\.?\d*\)?)", string)
+				print("List: " + str(line))
+				answer = sum(float(x) for x in line)
 				print("answer = " + str(answer))
 				break
 	else:
@@ -104,7 +104,7 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "1.406e+12+15-3"
+	operation = "1.4e+6+15-3"
 else:
 	operation = input("What calculation would you like to complete:")
 
