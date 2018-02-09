@@ -1,7 +1,8 @@
 #Simple Calulator
 #Sophia Baker
-#January 2018
+#January/February 2018
 
+#Regex
 import re
 
 #Strings call on operations to calulate mutliple variables using Regex:
