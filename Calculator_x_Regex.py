@@ -33,15 +33,16 @@ def varMult(input1,input2):
 			num = int(num)
 			print(num)
 			exp = exp + num -1
-		if re.findall("\d+",input1):
-			num = re.findall("(\d+)",input1)[0]
+		if re.findall("\-?\d+",input1):
+			num = re.findall("(\-?\d+)",input1)[0]
 			num = int(num)
 			coef = coef * num #WONT LET ME MULTIPLY FLOATS
-		if re.findall("\d+",input2):
-			num = re.findall("(\d+)",input2)[0]
+		if re.findall("\-?\d+",input2):
+			num = re.findall("(\-?\d+)",input2)[0]
 			num = int(num)
-			coef = coef * num #WONT LET ME MULTIPLY FLOATS
+			coef = coef * num #WHEN NO COEFF THEN MULTIPLIES EXP...
 		answer = coef, var1, exp
+	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
 	else: false
 
 	return answer
