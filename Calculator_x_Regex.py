@@ -15,6 +15,7 @@ def varMult(input1,input2):
 	var1 = re.findall("([a-z])",input1)[0]
 	var2 = re.findall("([a-z])",input2)[0]
 	if var1 == var2:
+		#num of variable occerences
 		exp1 = input1.count(var1)
 		exp2 = input2.count(var2)
 		exp = exp1 + exp2
@@ -26,26 +27,24 @@ def varMult(input1,input2):
 		if re.findall("\^(\-?\d+)",input1):
 			num = re.findall("\^(\-?\d+)",input1)[0]
 			num = int(num)
-			print(num)
 			exp = exp + num -1 #-1 sothat we dont acount for an extera variable from count above
 		if re.findall("\^(\-?\d+)",input2):
 			num = re.findall("\^(\-?\d+)",input2)[0]
-			print(num)
 			num = int(num)
-			print(num)
 			exp = exp + num -1
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
 			num = int(num)
-			print(num)
 			coef = coef * num #WONT LET ME MULTIPLY FLOATS
 		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
 			num = int(num)
-			print(num)
 			coef = coef * num #WHEN NO COEFF THEN MULTIPLIES EXP...
-		answer = coef, var1, exp
+		a = "%s" %coef
+		b = "%s" %var1
+		c = "^%s" %exp
+		answer = a+b+c
 	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
 	else: false
 
@@ -84,8 +83,8 @@ if debug:
 else:
 	operation = input("What calculation would you like to complete:")
 
-a = '4x^-2'
-b = '1x^3'
+a = '4x^7'
+b = '2x^-3'
 print(varMult(a,b))
 
 #REGEX
