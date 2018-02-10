@@ -42,7 +42,7 @@ def md(string):
 		if operator == '*':
 			answer = float(var1) * float(var2)
 			#print("answer = " + str(answer))
-		elif operator == '/':
+		elif operator == '/': 
 			answer = float(var1)/float(var2)
 			#print("answer = " + str(answer))
 		
