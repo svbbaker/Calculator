@@ -22,6 +22,7 @@ def varMult(input1,input2):
 		#	exp += 1
 		#if var2 in input2:
 		#	exp += 1
+		#exponents
 		if re.findall("\^(\-?\d+)",input1):
 			num = re.findall("\^(\-?\d+)",input1)[0]
 			num = int(num)
@@ -33,13 +34,16 @@ def varMult(input1,input2):
 			num = int(num)
 			print(num)
 			exp = exp + num -1
-		if re.findall("\-?\d+",input1):
-			num = re.findall("(\-?\d+)",input1)[0]
+		#coeffients
+		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
+			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
 			num = int(num)
+			print(num)
 			coef = coef * num #WONT LET ME MULTIPLY FLOATS
-		if re.findall("\-?\d+",input2):
-			num = re.findall("(\-?\d+)",input2)[0]
+		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
+			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
 			num = int(num)
+			print(num)
 			coef = coef * num #WHEN NO COEFF THEN MULTIPLIES EXP...
 		answer = coef, var1, exp
 	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
@@ -81,7 +85,7 @@ else:
 	operation = input("What calculation would you like to complete:")
 
 a = '4x^-2'
-b = 'x^3'
+b = '1x^3'
 print(varMult(a,b))
 
 #REGEX
