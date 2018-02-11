@@ -26,11 +26,11 @@ def varMult(input1,input2):
 		#exponents
 		if re.findall("\^(\-?\d+)",input1):
 			num = re.findall("\^(\-?\d+)",input1)[0]
-			num = int(num)
+			num = float(num)
 			exp = exp + num -1 #-1 sothat we dont acount for an extera variable from count above
 		if re.findall("\^(\-?\d+)",input2):
 			num = re.findall("\^(\-?\d+)",input2)[0]
-			num = int(num)
+			num = float(num)
 			exp = exp + num -1
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
@@ -72,7 +72,6 @@ def varAdd(input1,input2):
 		a = "%s" %coef
 		b = "%s" %var1
 		answer = a+b
-	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
 	else: false
 	
 	return answer
