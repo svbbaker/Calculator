@@ -46,20 +46,19 @@ def varMult(input1,input2):
 		c = "^%s" %exp
 		answer = a+b+c
 	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
-	else: false
-
+	else: 
+		anwer = False #"False"
 	return answer
 
 #variable Addition
 def varAdd(input1,input2):
 	print("Variable Addition:")
-	coef = 1
+	coef = 0
 	var1 = re.findall("([a-z])",input1)[0]
 	var2 = re.findall("([a-z])",input2)[0]
 	exp1 = re.findall("\^(\-?\d+)",input1)[0]
 	exp2 = re.findall("\^(\-?\d+)",input2)[0]
-	print(exp1,exp2)
-	if var1 == var2:# and if EXPONENTS ARE THE SAME:
+	if var1 == var2 and exp1 == exp2:# and if EXPONENTS ARE THE SAME:
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
@@ -71,9 +70,12 @@ def varAdd(input1,input2):
 			coef = coef + num
 		a = "%s" %coef
 		b = "%s" %var1
-		answer = a+b
-	else: false
-	
+		c = "^%s" %exp1
+		answer = a+b+c
+
+	else:
+		anwer = False #"False"
+
 	return answer
 
 
@@ -85,8 +87,8 @@ if debug:
 else:
 	operation = input("What calculation would you like to complete:")
 
-a = '4x^7'
-b = '2x^-3'
+a = '4x^3'
+b = '2x^3'
 print(varMult(a,b))
 print(varAdd(a,b))
 
