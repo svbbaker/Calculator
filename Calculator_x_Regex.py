@@ -14,6 +14,7 @@ def varMul(input1,input2):
 	coef = 1
 	var1 = re.findall("([a-z])",input1)[0]
 	var2 = re.findall("([a-z])",input2)[0]
+	# -x replace eith -1x
 	if var1 == var2:
 		#num of variable occerences
 		exp1 = input1.count(var1)
@@ -47,7 +48,8 @@ def varMul(input1,input2):
 		answer = a+b+c
 	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
 	else: 
-		anwer = False #"False"
+		answer = False #"False"
+
 	return answer
 
 #variable Division
@@ -87,7 +89,7 @@ def varDiv(input1,input2):
 		answer = a+b+c
 	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
 	else: 
-		anwer = False #"False"
+		answer = False #"False"
 	return answer
 
 #variable Addition
@@ -98,7 +100,7 @@ def varAdd(input1,input2):
 	var2 = re.findall("([a-z])",input2)[0]
 	exp1 = re.findall("\^(\-?\d+)",input1)[0]
 	exp2 = re.findall("\^(\-?\d+)",input2)[0]
-	if var1 == var2 and exp1 == exp2:# and if EXPONENTS ARE THE SAME:
+	if var1 == var2 and exp1 == exp2:
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
@@ -114,7 +116,7 @@ def varAdd(input1,input2):
 		answer = a+b+c
 
 	else:
-		anwer = False #"False"
+		answer = False #"False"
 
 	return answer
 
@@ -126,7 +128,7 @@ def varSub(input1,input2):
 	var2 = re.findall("([a-z])",input2)[0]
 	exp1 = re.findall("\^(\-?\d+)",input1)[0]
 	exp2 = re.findall("\^(\-?\d+)",input2)[0]
-	if var1 == var2 and exp1 == exp2:# and if EXPONENTS ARE THE SAME:
+	if var1 == var2 and exp1 == exp2:
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
@@ -142,13 +144,13 @@ def varSub(input1,input2):
 		answer = a+b+c
 
 	else:
-		anwer = False #"False"
+		answer = False #"False"
 
 	return answer
 
 
 #inputs
-a = '4x^5'
+a = '-x^2'
 b = '2x^5'
 print(varMul(a,b))
 print(varDiv(a,b))
