@@ -13,17 +13,18 @@ def varMul(input1,input2):
 	exp = 0
 	coef = 1
 	var1 = re.findall("([a-z])",input1)[0]
+	print(var1)
 	var2 = re.findall("([a-z])",input2)[0]
-	# -x replace eith -1x
+	#replace -x with -1x
+	if re.findall("(\-[a-z])",input1) or re.findall("(\-[a-z])",input2):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 	if var1 == var2:
+		print(input1)
 		#num of variable occerences
 		exp1 = input1.count(var1)
 		exp2 = input2.count(var2)
 		exp = exp1 + exp2
-		#if var1 in input1:
-		#	exp += 1
-		#if var2 in input2:
-		#	exp += 1
 		#exponents
 		if re.findall("\^(\-?\d+)",input1):
 			num = re.findall("\^(\-?\d+)",input1)[0]
@@ -46,9 +47,9 @@ def varMul(input1,input2):
 		b = "%s" %var1
 		c = "^%s" %exp
 		answer = a+b+c
-	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
+
 	else: 
-		answer = False #"False"
+		answer = False
 
 	return answer
 
@@ -59,6 +60,10 @@ def varDiv(input1,input2):
 	coef = 1
 	var1 = re.findall("([a-z])",input1)[0]
 	var2 = re.findall("([a-z])",input2)[0]
+		#replace -x with -1x
+	if re.findall("(\-[a-z])",input1) or re.findall("(\-[a-z])",input2):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 	if var1 == var2:
 		#num of variable occerences
 		exp1 = input1.count(var1)
@@ -100,6 +105,10 @@ def varAdd(input1,input2):
 	var2 = re.findall("([a-z])",input2)[0]
 	exp1 = re.findall("\^(\-?\d+)",input1)[0]
 	exp2 = re.findall("\^(\-?\d+)",input2)[0]
+		#replace -x with -1x
+	if re.findall("(\-[a-z])",input1) or re.findall("(\-[a-z])",input2):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 	if var1 == var2 and exp1 == exp2:
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
@@ -116,7 +125,7 @@ def varAdd(input1,input2):
 		answer = a+b+c
 
 	else:
-		answer = False #"False"
+		answer = False
 
 	return answer
 
@@ -128,6 +137,10 @@ def varSub(input1,input2):
 	var2 = re.findall("([a-z])",input2)[0]
 	exp1 = re.findall("\^(\-?\d+)",input1)[0]
 	exp2 = re.findall("\^(\-?\d+)",input2)[0]
+		#replace -x with -1x
+	if re.findall("(\-[a-z])",input1) or re.findall("(\-[a-z])",input2):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 	if var1 == var2 and exp1 == exp2:
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
@@ -144,14 +157,14 @@ def varSub(input1,input2):
 		answer = a+b+c
 
 	else:
-		answer = False #"False"
+		answer = False
 
 	return answer
 
 
 #inputs
-a = '-x^2'
-b = '2x^5'
+a = '-x^3'
+b = '-x^3'
 print(varMul(a,b))
 print(varDiv(a,b))
 print(varAdd(a,b))
