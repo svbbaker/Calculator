@@ -40,11 +40,11 @@ def varMul(input1,input2):
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
 			num = float(num)
-			coef = coef * num #WONT LET ME MULTIPLY FLOATS
+			coef = coef * num
 		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
 			num = float(num)
-			coef = coef * num #WHEN NO COEFF THEN MULTIPLIES EXP...
+			coef = coef * num
 		a = "%s" %coef
 		b = "%s" %var1
 		c = "^%s" %exp
@@ -92,13 +92,11 @@ def varDiv(input1,input2):
 		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
 			num = float(num)
-			coef = coef / num #WHEN NO COEFF THEN MULTIPLIES EXP...
-			#print(coef)
+			coef = coef / num 
 		a = "%s" %coef
 		b = "%s" %var1
 		c = "^%s" %exp
 		answer = a+b+c
-	#####HOW DO YOU HANDEL -x WITHOUT A COEFF???
 	else: 
 		answer = False #"False"
 	return answer
