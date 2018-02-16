@@ -9,7 +9,7 @@ import re
 
 #Exponents
 def exp(string):
-	print("Exponents:")
+	#print("Exponents:")
 	while '^' in string:
 		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
 		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
@@ -24,13 +24,13 @@ def exp(string):
 
 		#print("string = " + string)
 
-	print("string = " + string)
+	#print("string = " + string)
 
 	return string
 
 #Multiplication and Division
 def md(string):
-	print("Multiplication & Division:")
+	#print("Multiplication & Division:")
 	while '*' in string or '/' in string:
 		var1 = re.findall("(\-?\(?\d+\.?\d*\)?)[\*\/]",string)[0]
 		var2 = re.findall("[\*\/](\-?\(?\d+\.?\d*\)?)",string)[0]
@@ -50,30 +50,30 @@ def md(string):
 		string = string.replace(var1 + operator + var2, str(answer))
 		#print("string = " + string)
 
-	print("string = " + string)
+	#print("string = " + string)
 
 	return string
 
 #Addition and Subtraction
 def sumAll(string):
-	print("Addition & Subtraction:")
+	#print("Addition & Subtraction:")
 	if '+' in string or '-' in string:
 		for i in string:
 			if i == '+' in string or i == '-' in string:
 				line = re.findall("(\-?\d\.?\d*e\+\d+|\-?\(?\d+\.?\d*\)?)", string)
-				print("List: " + str(line))
+				#print("List: " + str(line))
 				answer = sum(float(x) for x in line)
-				print("answer = " + str(answer))
+				#äprint("answer = " + str(answer))
 				break
 	else:
-		print("no Multiplication or Division")
+		#print("no Multiplication or Division")
 		answer = string
 	
 	return answer
 
 #Parenthisis
 def parenth(string):
-	print("Parenthisis:")
+	#print("Parenthisis:")
 	while '(' in string or ')' in string:
 		part = re.findall("\(([^\)]+)\)",string)[0]
 		print("part: " + part)
@@ -86,7 +86,7 @@ def parenth(string):
 		
 		string = string.replace("(" + part + ")", str(answer))
 
-	print("string = " + string)
+	#print("string = " + string)
 
 	return string
 
@@ -165,10 +165,12 @@ def varDiv(input1,input2):
 			num = re.findall("\^(\-?\d+)",input1)[0]
 			num = float(num)
 			expA = exp1 + num -1 #-1 so that we dont acount for an extera variable from count above
+		else: expA = exp1
 		if re.findall("\^(\-?\d+)",input2):
 			num = re.findall("\^(\-?\d+)",input2)[0]
 			num = float(num)
 			expB = exp2 + num -1
+		else: expB = exp2
 		exp = expA - expB
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
@@ -194,8 +196,13 @@ def varAdd(input1,input2):
 	coef = 0
 	var1 = re.findall("([a-z])",input1)[0]
 	var2 = re.findall("([a-z])",input2)[0]
-	exp1 = re.findall("\^(\-?\d+)",input1)[0]
-	exp2 = re.findall("\^(\-?\d+)",input2)[0]
+
+	if re.findall("\^(\-?\d+)",input1):
+		exp1 = re.findall("\^(\-?\d+)",input1)[0]
+	else: exp1 = True
+	if re.findall("\^(\-?\d+)",input2):
+		exp2 = re.findall("\^(\-?\d+)",input2)[0]
+	else: exp2 = True
 
 	#replace -x with -1x
 	if re.findall("(\-[a-z])",input1):
@@ -230,8 +237,13 @@ def varSub(input1,input2):
 	coef = 0
 	var1 = re.findall("([a-z])",input1)[0]
 	var2 = re.findall("([a-z])",input2)[0]
-	exp1 = re.findall("\^(\-?\d+)",input1)[0]
-	exp2 = re.findall("\^(\-?\d+)",input2)[0]
+
+	if re.findall("\^(\-?\d+)",input1):
+		exp1 = re.findall("\^(\-?\d+)",input1)[0]
+	else: exp1 = True
+	if re.findall("\^(\-?\d+)",input2):
+		exp2 = re.findall("\^(\-?\d+)",input2)[0]
+	else: exp2 = True
 
 	#replace -x with -1x
 	if re.findall("(\-[a-z])",input1):
@@ -261,6 +273,12 @@ def varSub(input1,input2):
 
 #################################################################################################################
 
+def distrib(string):
+	print("Distributive Propert")
+
+
+
+#################################################################################################################
 print("welcome to calculator.py")
 
 #inputs
@@ -281,7 +299,7 @@ print("the answer to your calculation is: " + str(operation))
 
 #inputs
 a = '-x^4'
-b = '5x^4'
+b = '5x'
 print(varMul(a,b))
 print(varDiv(a,b))
 print(varAdd(a,b))
