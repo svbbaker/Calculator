@@ -9,9 +9,9 @@ import re
 
 #Exponents
 def exp(string):
-	#print("Exponents:")
+	print("Exponents:")
 	while '^' in string:
-		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
+		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0] #^[\e\+\d+]
 		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
 
 		#print("var1 = " + var1)
@@ -24,7 +24,7 @@ def exp(string):
 
 		#print("string = " + string)
 
-	#print("string = " + string)
+	print("string = " + string)
 
 	return string
 
@@ -99,8 +99,14 @@ def varMul(input1,input2):
 
 	exp = 0
 	coef = 1
-	var1 = re.findall("([a-z])",input1)[0]
-	var2 = re.findall("([a-z])",input2)[0]
+
+	#if variables
+	if re.findall("([a-z])",input1):
+		var1 = re.findall("([a-z])",input1)[0]
+	else: var1 = False
+	if re.findall("([a-z])",input2):
+		var2 = re.findall("([a-z])",input2)[0]
+	else: var2 = True
 
 	#replace -x with -1x
 	if re.findall("(\-[a-z])",input1):
@@ -136,8 +142,18 @@ def varMul(input1,input2):
 		c = "^%s" %exp
 		answer = a+b+c
 
-	else: 
-		answer = False
+	#no variables
+	if re.findall("\d+",input1) and re.findall("\d+",input2):
+		string = input1 + "*" + input2
+		print(string)
+		print(type(string)) #it is a class string, so what is wrong with this?!
+		string = exp(string)
+		#string = md(string)
+		answer = string
+		return answer
+
+	else:
+		answer = False	
 
 	return answer
 
@@ -147,8 +163,12 @@ def varDiv(input1,input2):
 
 	exp = 0
 	coef = 1
-	var1 = re.findall("([a-z])",input1)[0]
-	var2 = re.findall("([a-z])",input2)[0]
+	
+	#if variables
+	if re.findall("([a-z])",input1):
+		var1 = re.findall("([a-z])",input1)[0]
+	if re.findall("([a-z])",input2):
+		var2 = re.findall("([a-z])",input2)[0]
 
 	#replace -x with -1x
 	if re.findall("(\-[a-z])",input1):
@@ -180,7 +200,7 @@ def varDiv(input1,input2):
 		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
 			num = float(num)
-			coef = coef / num 
+			coef = coef / num
 		a = "%s" %coef
 		b = "%s" %var1
 		c = "^%s" %exp
@@ -194,8 +214,12 @@ def varAdd(input1,input2):
 	print("Variable Addition:")
 
 	coef = 0
-	var1 = re.findall("([a-z])",input1)[0]
-	var2 = re.findall("([a-z])",input2)[0]
+	
+	#if variables
+	if re.findall("([a-z])",input1):
+		var1 = re.findall("([a-z])",input1)[0]
+	if re.findall("([a-z])",input2):
+		var2 = re.findall("([a-z])",input2)[0]
 
 	if re.findall("\^(\-?\d+)",input1):
 		exp1 = re.findall("\^(\-?\d+)",input1)[0]
@@ -235,8 +259,12 @@ def varSub(input1,input2):
 	print("Variable Subtraction:")
 
 	coef = 0
-	var1 = re.findall("([a-z])",input1)[0]
-	var2 = re.findall("([a-z])",input2)[0]
+	
+	#if variables
+	if re.findall("([a-z])",input1):
+		var1 = re.findall("([a-z])",input1)[0]
+	if re.findall("([a-z])",input2):
+		var2 = re.findall("([a-z])",input2)[0]
 
 	if re.findall("\^(\-?\d+)",input1):
 		exp1 = re.findall("\^(\-?\d+)",input1)[0]
@@ -274,8 +302,21 @@ def varSub(input1,input2):
 #################################################################################################################
 
 def distrib(string):
-	print("Distributive Propert")
-
+	print("Distributive Property:")
+	if re.findall("((\-?\d+?[a-z]|\-?\d)\((.+)\))",string):
+		inside = re.findall("\((.+)\)",string)[0]
+		print(inside)
+		if re.findall("\-?\d+?[a-z]|\-?\d\*\-?\d+?[a-z]|\-?\d",string):
+			var1 = re.findall("(\-?\d+?[a-z]|\-?\d)\*",string)[0]
+			var2 = re.findall("\*(\-?\d+?[a-z]|\-?\d)",string)[0]
+			inside = varMul(var1,var2)
+			print(inside)
+			string = string.replace(var1 + "*" + var2, str(inside))
+			return string
+		#multiply the piece before the parenth interativly through the pieces inside the parenths
+		answer = True
+		print(answer)
+	return answer
 
 
 #################################################################################################################
@@ -285,23 +326,26 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "1.4e+6+15-3"
+	operation = '2^2*5'
 else:
 	operation = input("What calculation would you like to complete:")
 
 #performing calulations in order of operation:	
-operation = parenth(operation)
-operation = exp(operation)
-operation = md(operation)
-operation = sumAll(operation)
+#operation = parenth(operation)
+#operation = exp(operation)
+#operation = md(operation)
+#operation = sumAll(operation)
 
 print("the answer to your calculation is: " + str(operation))
 
+function = '5x(5^2*2+2x^3)-3'
+function = distrib(function)
+
 #inputs
-a = '-x^4'
-b = '5x'
-print(varMul(a,b))
-print(varDiv(a,b))
-print(varAdd(a,b))
-print(varSub(a,b))
+a = '2^2'
+b = '5'
+#print(varMul(a,b))
+#print(varDiv(a,b))
+#print(varAdd(a,b))
+#print(varSub(a,b))
 

@@ -11,7 +11,7 @@ import re
 def exp(string):
 	print("Exponents:")
 	while '^' in string:
-		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
+		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0] #^[\e\+\d+]
 		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
 
 		#print("var1 = " + var1)
@@ -267,7 +267,7 @@ print("welcome to calculator.py")
 debug = True
 
 if debug:
-	operation = "1.4e+6+15-3"
+	operation = "-2^4*5"
 else:
 	operation = input("What calculation would you like to complete:")
 
@@ -280,10 +280,23 @@ operation = sumAll(operation)
 print("the answer to your calculation is: " + str(operation))
 
 #inputs
-a = '-x^4'
-b = '5x^4'
-print(varMul(a,b))
-print(varDiv(a,b))
-print(varAdd(a,b))
-print(varSub(a,b))
+input1 = '-2^4' #a
+input2 = '5'	#b
+#print(varMul(a,b))
+#print(varDiv(a,b))
+#print(varAdd(a,b))
+#print(varSub(a,b))
 
+print("yes:")
+#no variables
+if re.findall("\d+",input1) and re.findall("\d+",input2):
+	string = input1 + "*" + input2
+	print(string)
+	string = exp(string)
+	print(string)
+	string = md(string)
+	print(string)
+	#input1 = float(input1)
+	#input2 = float(input2)
+	#answer = input1 * input2
+	#answer = string
