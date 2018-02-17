@@ -142,16 +142,6 @@ def varMul(input1,input2):
 		c = "^%s" %exp
 		answer = a+b+c
 
-	#no variables
-	if re.findall("\d+",input1) and re.findall("\d+",input2):
-		string = input1 + "*" + input2
-		print(string)
-		print(type(string)) #it is a class string, so what is wrong with this?!
-		string = exp(string)
-		#string = md(string)
-		answer = string
-		return answer
-
 	else:
 		answer = False	
 
@@ -305,14 +295,54 @@ def distrib(string):
 	print("Distributive Property:")
 	if re.findall("((\-?\d+?[a-z]|\-?\d)\((.+)\))",string):
 		inside = re.findall("\((.+)\)",string)[0]
-		print(inside)
-		if re.findall("\-?\d+?[a-z]|\-?\d\*\-?\d+?[a-z]|\-?\d",string):
-			var1 = re.findall("(\-?\d+?[a-z]|\-?\d)\*",string)[0]
-			var2 = re.findall("\*(\-?\d+?[a-z]|\-?\d)",string)[0]
-			inside = varMul(var1,var2)
-			print(inside)
-			string = string.replace(var1 + "*" + var2, str(inside))
-			return string
+		#print(inside)
+		#print("inside:")
+		#print(re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",inside))
+		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",inside): #if *
+			if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside): #if variables
+				#print("part:")
+				#print(re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside)) 
+				var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/]",inside)[0]
+				#print(var1)
+				var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside)[0]
+				#print(var2)
+				varA = exp(var1)
+				#print(varA)
+				varB = exp(var2)
+				#print(varB)
+				# HOW TO DEAL WITH 4^X * BLAH ?!??!?!?!?!?!?! here
+				part = varMul(varA,varB)
+				#print(part)
+				inside = inside.replace(var1 + "*" + var2, str(part))
+				print("new inside:")
+				print(inside)
+			#IF MIXED
+			print("inside:")
+			print(re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside))
+			if re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside): #if variables
+				print("part:")
+				print(re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside)) 
+				var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/]",inside)[0]
+				print(var1)
+				var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*)",inside)[0]
+				print(var2)
+				varA = exp(var1)
+				print(varA)
+				varB = exp(var2)
+				print(varB)
+				part = varA + "*" + varB
+				print("part")
+				print(part)
+				part = md(part)
+				print(part)
+				print(inside)
+				print(var1)
+				print(var2)
+				inside = inside.replace(var1 + "*" + var2, str(part))
+				print("inside:")
+				print(inside)
+				return inside
+			
 		#multiply the piece before the parenth interativly through the pieces inside the parenths
 		answer = True
 		print(answer)
@@ -336,9 +366,9 @@ else:
 #operation = md(operation)
 #operation = sumAll(operation)
 
-print("the answer to your calculation is: " + str(operation))
+#print("the answer to your calculation is: " + str(operation))
 
-function = '5x(5^2*2+2x^3)-3'
+function = '5(5^2x*2x+2*3^2)'
 function = distrib(function)
 
 #inputs
