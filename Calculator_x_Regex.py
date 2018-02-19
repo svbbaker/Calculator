@@ -8,14 +8,14 @@ import re
 #################################################################################################################
 
 #Exponents
-def exp(string):
+def expo(string):
 	print("Exponents:")
 	while '^' in string:
 		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0] #^[\e\+\d+]
 		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
 
-		#print("var1 = " + var1)
-		#print("var2 = " + var2)
+		print("var1 = " + var1)
+		print("var2 = " + var2)
 
 		answer = float(var1) ** float(var2)
 		#print("answer = " + str(answer))
@@ -80,7 +80,7 @@ def parenth(string):
 
 		
 		answer = parenth(part)
-		answer = exp(answer)
+		answer = expo(answer)
 		answer = md(answer)
 		answer = sumAll(answer)
 		
@@ -139,6 +139,66 @@ def varMul(input1,input2):
 			coef = coef * num
 		a = "%s" %coef
 		b = "%s" %var1
+		c = "^%s" %exp
+		answer = a+b+c
+
+	else:
+		answer = False	
+
+	return answer
+
+#variable multiplicaiton
+def varMulComb(input1,input2):
+	print("Variable Combined Multiplicaiton:")
+
+	exp = 0
+	coef = 1
+
+	#if variables
+	if re.findall("([a-z])",input1): #if input1 has a variable
+		var = re.findall("([a-z])",input1)[0] #then it is equal to var
+		g = True #and g is true
+	else: #else
+		num = input1 #input1 is equal to num
+		g = False #and g is false
+	if re.findall("([a-z])",input2): #if input2 has a variable
+		var = re.findall("([a-z])",input2)[0] #then it is equal to var
+		h = True #and h is true
+	else: #else
+		num = input2 #input2 is equal to num
+		h = False #and h is false
+
+	if g == True:
+		variable = input1
+	else: number = input1
+	if h == True:
+		variable = input2
+	else: number = input2
+
+	#replace -x with -1x
+	if re.findall("(\-[a-z])",input1):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
+	if re.findall("(\-[a-z])",input2):
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
+
+	if g != h: #if they are not the same then there is a value for var and num
+		#num of variable occerences
+		exp = input1.count(var)
+		#exponents
+		if re.findall("\^(\-?\d+)",variable):
+			n = re.findall("\^(\-?\d+)",variable)[0]
+			n = float(n)
+			exp = exp + n -1 #-1 so that we dont acount for an extera variable from count above
+		if re.findall("(\d+\^[\-?\d+])",number):
+			number = expo(number)
+		#coeffients
+		if re.findall("(?<![\^\-])[\-\d\.]+",variable):
+			n = re.findall("(?<![\^\-])[\-\d\.]+",variable)[0]
+			n = float(n)
+			coef = coef * n
+		coef = coef * number
+		a = "%s" %coef
+		b = "%s" %var
 		c = "^%s" %exp
 		answer = a+b+c
 
@@ -295,55 +355,43 @@ def distrib(string):
 	print("Distributive Property:")
 	if re.findall("((\-?\d+?[a-z]|\-?\d)\((.+)\))",string):
 		inside = re.findall("\((.+)\)",string)[0]
-		#print(inside)
-		#print("inside:")
-		#print(re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",inside))
 		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",inside): #if *
 			if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside): #if variables
-				#print("part:")
-				#print(re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside)) 
 				var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/]",inside)[0]
-				#print(var1)
 				var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside)[0]
-				#print(var2)
-				varA = exp(var1)
-				#print(varA)
-				varB = exp(var2)
-				#print(varB)
+				varA = expo(var1)
+				varB = expo(var2)
 				# HOW TO DEAL WITH 4^X * BLAH ?!??!?!?!?!?!?! here
 				part = varMul(varA,varB)
+				inside = inside.replace(var1 + "*" + var2, str(part))
+				#print("new inside:")
+				#print(inside)
+			if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)|(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside): #if mixed variables
+				#print("part:")
+				#print(re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",inside)) 
+				var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*\/]",inside)[0]
+				#print(var1)
+				var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",inside)[0]
+				#print(var2)
+				varA = expo(var1)
+				varB = expo(var2)
+				# HOW TO DEAL WITH 4^x * BLAH ?!??!?!?!?!?!?! here
+				part = varMulComb(varA,varB)
 				#print(part)
 				inside = inside.replace(var1 + "*" + var2, str(part))
 				print("new inside:")
 				print(inside)
-			#IF MIXED
-			print("inside:")
-			print(re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside))
-			if re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside): #if variables
-				print("part:")
-				print(re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside)) 
+			#print("inside:")
+			#print(re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside))
+			if re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",inside): #if variables 
 				var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/]",inside)[0]
-				print(var1)
 				var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*)",inside)[0]
-				print(var2)
-				varA = exp(var1)
-				print(varA)
-				varB = exp(var2)
-				print(varB)
+				varA = expo(var1)
+				varB = expo(var2)
 				part = varA + "*" + varB
-				print("part")
-				print(part)
 				part = md(part)
-				print(part)
-				print(inside)
-				print(var1)
-				print(var2)
 				inside = inside.replace(var1 + "*" + var2, str(part))
-				print("inside:")
-				print(inside)
 				return inside
-			
-		#multiply the piece before the parenth interativly through the pieces inside the parenths
 		answer = True
 		print(answer)
 	return answer
@@ -362,14 +410,14 @@ else:
 
 #performing calulations in order of operation:	
 #operation = parenth(operation)
-#operation = exp(operation)
+#operation = expo(operation)
 #operation = md(operation)
 #operation = sumAll(operation)
 
 #print("the answer to your calculation is: " + str(operation))
 
-function = '5(5^2x*2x+2*3^2)'
-function = distrib(function)
+function = '5(5^2x*2x+2*3^2+2x^2*5^2)'
+#function = distrib(function)
 
 #inputs
 a = '2^2'
@@ -378,4 +426,11 @@ b = '5'
 #print(varDiv(a,b))
 #print(varAdd(a,b))
 #print(varSub(a,b))
+
+x = "x^2"
+y = "3^2"
+varMulComb(x,y)
+#print(y)
+#expo(y)
+
 
