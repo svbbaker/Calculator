@@ -1,74 +1,84 @@
-#Simple Calulator
+#Calulator
 #Sophia Baker
-#January/February 2018
+#2018
 
 #Regex
 import re
 
-#################################################################################################################
+
+#############################################################################################################################################################################################
+#############################################################################################################################################################################################
 #NUMBERS
-
-#Exponents
-def expo(string):
-	print("Exponents:")
-	while '^' in string:
-		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
-		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
-		answer = float(var1) ** float(var2)
-
-		string = string.replace(var1 + "^" + var2, str(answer))
-
-	return string
 
 #Multiplication and Division
 def md(string):
 	#print("Multiplication & Division:")
+	#if there is a * or / in the input string then run loop until there is not another
 	while '*' in string or '/' in string:
+		#variable 1: part before the * or / symbol
 		var1 = re.findall("(\-?\(?\d+\.?\d*\)?)[\*\/]",string)[0]
+		#variable 2: part after the * or / symbol
 		var2 = re.findall("[\*\/](\-?\(?\d+\.?\d*\)?)",string)[0]
+		#what symbol is between the variabeles: * or /
 		operator = re.findall("[\*\/]",string)[0]
-
+		#if multiplication:
 		if operator == '*':
 			answer = float(var1) * float(var2)
+		#else if division:
 		elif operator == '/': 
 			answer = float(var1)/float(var2)
-		
+		#replace the part in input string (var1 sybol var2) with the answer from the operation
 		string = string.replace(var1 + operator + var2, str(answer))
 
+	#return the new string
 	return string
 
 #Addition and Subtraction
 def sumAll(string):
 	#print("Addition & Subtraction:")
+	#if there is a + or - in the input string then run loop
 	if '+' in string or '-' in string:
+		#iterate throught the symbols in the string using i
 		for i in string:
+			#if i is equal to + or -
 			if i == '+' in string or i == '-' in string:
+				#finds the pieces around the sybol + or -
 				line = re.findall("(\-?\d\.?\d*e\+\d+|\-?\(?\d+\.?\d*\)?)", string)
-				#print("List: " + str(line))
+				#sum the piecies using a for loop
 				answer = sum(float(x) for x in line)
+				#break out of if 
 				break
+	#if there is no + or - sybol in input string:
 	else:
+		#keep the answer equal to the intial string
 		answer = string
-	
+
+	#return the new string
 	return answer
 
 #Parenthisis
 def parenth(string):
 	#print("Parenthisis:")
+	#if there are parenthisis in the input string then run loop until there is not another
 	while '(' in string or ')' in string:
+		#part: part of the input string inbetween the parenthisis - (...)
 		part = re.findall("\(([^\)]+)\)",string)[0]
-		print("part: " + part)
 		
+		#answer: part solved by going through exponent, multiplication, addition
 		answer = parenth(part)
-		answer = expo(answer)
-		answer = md(answer)
+		answer = exponent(answer)
+		answer = multiplication(answer)
 		answer = sumAll(answer)
 		
+		#replace the part in input string inside the parenthisis inclusive, with the answer from the operation itteration
 		string = string.replace("(" + part + ")", str(answer))
 
+	#return the new string
 	return string
 
-#################################################################################################################
+
+#############################################################################################################################################################################################
+#############################################################################################################################################################################################
 #VARIABLS
 
 # HOW TO DEAL WITH 4^x * BLAH ?!??!?!?!?!?!?! here
@@ -77,56 +87,104 @@ def parenth(string):
 def varMul(input1,input2):
 	#print("Variable Multiplicaiton:")
 
+	#defining variables: exponent initialy 0, coefficient initially 1 ('cause multiplication)
 	exp = 0
 	coef = 1
 
 	#if variables
 	if re.findall("([a-z])",input1):
+		#var1: variable in input1
 		var1 = re.findall("([a-z])",input1)[0]
+	#if no variable in input1 then var1 is false
 	else: var1 = False
 	if re.findall("([a-z])",input2):
+		#var2: variable in input2
 		var2 = re.findall("([a-z])",input2)[0]
+	#if no variable in input 2 than var2 us false
 	else: var2 = True
 
-	#replace -x with -1x
+	#replace -x with -1x (in both input1 and input 2)
 	if re.findall("(\-[a-z])",input1):
 		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
 	if re.findall("(\-[a-z])",input2):
 		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 
+	#if the variables in input1 and input2 are equal:
 	if var1 == var2:
-		#num of variable occerences
+		#num of variable occerences (exp1 correnlates to var1 and exp2 to variable2)
 		exp1 = input1.count(var1)
 		exp2 = input2.count(var2)
+		#exp is equal to the sum of variale occerences in var1 and var2 (denoted as exp1 and exp2)
 		exp = exp1 + exp2
 		#exponents
+		#if there is ^ in input1
 		if re.findall("\^(\-?\d+)",input1):
-			num = re.findall("\^(\-?\d+)",input1)[0]
+			#select the piece that is after the ^ 
+			num = re.findall("\^(\-?\d+|\(.+\))",input1)[0]
+			#if there are parenthisis symplify the inside
+			num = parenth(num)
+			#makes num into numbers with decimals
 			num = float(num)
-			exp = exp + num -1 #-1 so that we dont acount for an extera variable from count above
+			#exp is equal to the former exp value sumed with num, -1 subtracts the extera variable acounted for in the variable amount count
+			exp = exp + num -1
+		#if there is ^ in input2		
 		if re.findall("\^(\-?\d+)",input2):
-			num = re.findall("\^(\-?\d+)",input2)[0]
+			#select the piece that is after the ^ 
+			num = re.findall("\^(\-?\d+|\(.+\))",input2)[0]
+			#if there are parenthisis symplify the inside
+			num = parenth(num)
+			#makes num into numbers with decimals
 			num = float(num)
+			#exp is equal to the former exp value sumed with num, -1 subtracts the extera variable acounted for in the variable amount count
 			exp = exp + num -1
 		#coeffients
+		#if there is a number before the variable in input1
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
+			#num is equal to the number before the variable
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
+
+			#############ADD IN PARENTHISIS INTO REGEX ABOVE (LOOK TO LAST SECTION IN CODE)!!!!!!!
+
+			#if there are parenthisis symplify the inside
+			num = parenth(number)
+			#makes num into numbers with decimals
 			num = float(num)
+			#coef is equal to former coef times the number before the variable - num -
 			coef = coef * num
+		#if there is a number before the variable in input2
 		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
+			#num is equal to the number before the variable
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
+
+			#############ADD IN PARENTHISIS INTO REGEX ABOVE (LOOK TO LAST SECTION IN CODE)!!!!!!!
+			
+			#if there are parenthisis symplify the inside
+			num = parenth(number)
+			#makes num into numbers with decimals
 			num = float(num)
+			#coef is equal to former coef times the number before the variable - num -
 			coef = coef * num
-		a = "%s" %coef
+		#creating variables = strings that are variables	
+		#coeffiencet value
+		a = "%s" %coef 
+		#the variable being used (looking to var1 to find which letter it is)
 		b = "%s" %var1
+		#extopenet value including ^ (exponent) symbol
 		c = "^%s" %exp
+		#answer: combined variables holding the variable parts as strings
 		answer = a+b+c
 
+	#if the variables are not equivalent
 	else:
+		#creating variables = strings that are variables	
+		#a: input1 as string
 		a = "%s" %input1
+		#b: input2 as string
 		b = "%s" %input2
+		#anser: combined variables holding the variable parts as strings (a and b seperated by * symbol)
 		answer = a + "*" + b
 
+	#returning answer
 	return answer
 
 #variable Division
@@ -278,8 +336,11 @@ def varSub(input1,input2):
 
 	return answer
 
-#################################################################################################################
+
+#############################################################################################################################################################################################
+#############################################################################################################################################################################################
 #MIXED
+
 ###########ENCORPERATE PARENTHISIS:
 
 
@@ -326,13 +387,13 @@ def varMulComb(input1,input2):
 			n = float(n)
 			exp = exp + n -1 #-1 so that we dont acount for an extera variable from count above
 		if re.findall("(\d+\^[\-?\d+])",number):
-			number = expo(number)
+			number = exponent(number)
 		#coeffients
 		if re.findall("(?<![\^\-])[\-\d\.]+",variable):
 			n = re.findall("(?<![\^\-])[\-\d\.]+",variable)[0]
 			n = float(n)
 			coef = coef * n
-		coef = coef * number
+		coef = coef * float(number)
 		a = "%s" %coef
 		b = "%s" %var
 		c = "^%s" %exp
@@ -345,26 +406,92 @@ def varMulComb(input1,input2):
 
 	return answer
 
-#################################################################################################################
+#variable combined division
+def varDivComb(input1,input2):
+	#print("Variable Combined Division:")
+
+	exp = 0
+	coef = 1
+
+	#if variables
+	if re.findall("([a-z])",input1): #if input1 has a variable
+		var = re.findall("([a-z])",input1)[0] #then it is equal to var
+		g = True #and g is true
+	else: #else
+		num = input1 #input1 is equal to num
+		g = False #and g is false
+	if re.findall("([a-z])",input2): #if input2 has a variable
+		var = re.findall("([a-z])",input2)[0] #then it is equal to var
+		h = True #and h is true
+	else: #else
+		num = input2 #input2 is equal to num
+		h = False #and h is false
+
+	if g == True:
+		variable = input1
+	else: number = input1
+	if h == True:
+		variable = input2
+	else: number = input2
+
+	#replace -x with -1x
+	if re.findall("(\-[a-z])",input1):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
+	if re.findall("(\-[a-z])",input2):
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
+
+	#if g == False: #if they are not the same then there is a value for var and num
+	#num of variable occerences
+	exp = variable.count(var)
+	#exponents
+	if re.findall("\^(\-?\d+)",variable):
+		n = re.findall("\^(\-?\d+)",variable)[0]
+		n = float(n)
+		if g == False:
+			exp = (exp + n -1)*(-1) #-1 so that we dont acount for an extera variable from count above
+		if h == False:
+			exp = exp + n - 1
+	if re.findall("(\d+\^[\-?\d+])",number):
+		number = exponent(number)
+	#coeffients
+	if re.findall("(?<![\^\-])[\-\d\.]+",variable):
+		n = re.findall("(?<![\^\-])[\-\d\.]+",variable)[0]
+		n = float(n)
+		coef = coef * n
+	coef = coef * float(number)
+	print(coef)
+	a = "%s" %coef
+	b = "%s" %var
+	c = "^%s" %exp
+	answer = a+b+c
+
+
+	#else:
+	#	a = "%s" %input1
+	#	b = "%s" %input2
+	#	answer = a + "/" + b
+
+	print(answer)
+	return answer
+
+
+#############################################################################################################################################################################################
+#############################################################################################################################################################################################
 #COMBINED
 
 #Exponents
 def exponent(string):
 	print("Exponents:")
-	while '^' in string:
-		if re.findall("(\(?\d+\.?\d*\)?)\^(\(?\d+\.?\d*\)?)",string): #if numbers
-			var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
-			var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
-			answer = float(var1) ** float(var2)
-			string = string.replace(var1 + "^" + var2, str(answer))
-		if re.findall("(\(?\d+\.?\d*[a-z]\)?)\^(\(?\d+\.?\d*\)?)",string): #if variables
-			#ARE THE VARIABLES REMEBER OUTSIDE OF WHILE? AND IF THERE ARE MORE THEN 1 ITTERATION HOW DO I REPLACE BACK WITH COREECT VALUES
-			#part1 = re.findall("(\(?\d+\.?\d*[a-z]\)?)\^(\(?\d+\.?\d*\)?)",string)[0]
-			#answer = "sub1"
-			#string = string.replace(part, str(answer))
-			break
-		if re.findall("(\(?\d+\.?\d*[a-z]?\)?)\^(\(?[a-z]+\)?)",string): #if 'to the' variables
-			break
+	while len(re.findall("(\(?\d+\.?\d*\)?)\^(\(?\d+\.?\d*\)?)",string))>0:
+		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
+		print(var1)
+		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
+		print("exp = " + var2)
+		answer = float(var1) ** float(var2)
+		print("answer:")
+		print(answer)
+		string = string.replace(var1 + "^" + var2, str(answer))
+		print(string)
 	return string
 
 ###########ENCORPERATE PARENTHISIS:
@@ -373,6 +500,7 @@ def exponent(string):
 def multiplication(string):
 	while "*" in string:
 		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string): #if variables
+			print("yess!!!")
 			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/]",string)[0]
 			var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
 			varA = exponent(var1)
@@ -384,8 +512,11 @@ def multiplication(string):
 			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*\/]",string)[0]
 			var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",string)[0]
 			print("var1:  " + var1)
+			print("var2:  " + var2)
 			varA = exponent(var1)
 			varB = exponent(var2)
+			print("exponented:  " + var1)
+			print("exponented:  " + var2)
 			part = varMulComb(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
 			print(string)
@@ -398,23 +529,57 @@ def multiplication(string):
 			part = md(part)
 			string = string.replace(var1 + "*" + var2, str(part))
 			print(string)
+		
+
 	return string
 
 
-#################################################################################################################
+#############################################################################################################################################################################################
+#############################################################################################################################################################################################
 
 def distrib(string):
 	print("Distributive Property:")
-	if re.findall("((\-?\d+?[a-z]|\-?\d)\((.+)\))",string):
+	if re.findall("((\-?\d+\.?\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?|\-?[a-z]+\^?\(?.+\)?\d?\^?\(?.+\)?)\(.+\))",string):
 		inside = re.findall("\((.+)\)",string)[0]
+		#doenst work when extera parenth inside:
+		#num = re.findall("[\+\-](\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?)\(.+\)",string)[0] ######HELPPPPPP
+		######HELPPPPPP
+		######HELPPPPPP
+		num = re.findall("(\d+)\(.+\)",string)[0]
+		#num = exponent(num)
+		#nun = multiplication(num)
+		#num = division(num)
+		print("num: " + num)
 		#PARENTHISIS
-		inside = parenthisis(inside)
+		#inside = parenthisis(inside)
 		inside = multiplication(inside)
 		print("string = " + inside)
+		#split into + and - 
+		var1 = re.findall("(\d+\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?[a-z]?\^?\(?\-?\d?\.?\d?[a-z]?\)?|\-?[a-z]+\^?\(?\-?\d?\.?\d?[a-z]?\)?\d?\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?)[\+\-]",inside)[0]
+		var2 = re.findall("[\+\-](\d+\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?[a-z]?\^?\(?\-?\d?\.?\d?[a-z]?\)?|\-?[a-z]+\^?\(?\-?\d?\.?\d?[a-z]?\)?\d?\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?)",inside)[0]
+		print("v1:" + var1)
+		print("v2:" + var2)
+		#creating new string to multiply in the coeficient before the inside (...)
+		#####DID NOT WORK WITH OTHER FOR LOOP
+
+		#sorting into array sothat num can be multipled to it
+		#for i in range(0,len(var1)+len(var2)):
+		#	m = "*"
+		#	###WHAT DO I DO INSTEAD OF SOMETHING
+		#	something = "+"
+		#	newstring1 = num + m + var1[i]
+		#	newstring2 = num + m + var2[i]
+		#	newstring = 
+		#	print(newstring)
+		#print("newstring: "+newstring)
+		
 	return string
 
 
-#################################################################################################################
+#############################################################################################################################################################################################
+#############################################################################################################################################################################################
+#calling on functions
+
 print("welcome to calculator.py")
 
 #inputs
@@ -427,29 +592,21 @@ else:
 
 #performing calulations in order of operation:	
 #operation = parenth(operation)
-#operation = expo(operation)
+#operation = exponent(operation)
 #operation = md(operation)
 #operation = sumAll(operation)
 
 #print("the answer to your calculation is: " + str(operation))
 
-function = '5(5^2x*2x+2*3^2+2x^2*5^2)'
-print(function)
+function = '5x^2+2(5^2x*2x+2*3^2+2x^2*5^2)'
+#print(function)
+#finction = multiplication(function)
 #function = distrib(function)
-exponent("5^2x*2x+2*3^2+2x^2*5^2")
+print(multiplication("6y^6*3x^4"))
+#exponent("5^2x*2x+2*3^2+2x^2*5^2")
 
-#inputs
-a = '2^2'
-b = '5'
-#print(varMul(a,b))
-#print(varDiv(a,b))
-#print(varAdd(a,b))
-#print(varSub(a,b))
 
-x = "x^2"
-y = "3^2"
-#varMulComb(x,y)
-#print(y)
-#expo(y)
+########MAKE IT ALPHABETICAL right before spitting out the answer
+
 
 
