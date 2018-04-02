@@ -383,13 +383,13 @@ def varMulComb(input1,input2):
 		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 
 	if g != h: #if they are not the same then there is a value for var and num
-		#num of variable occerences
-		exp = input1.count(var)
 		#exponents
 		if re.findall("\^(\-?\d+)",variable):
 			n = re.findall("\^(\-?\d+)",variable)[0]
 			n = float(n)
-			exp = exp + n -1 #-1 so that we dont acount for an extera variable from count above
+			exp = exp + n 
+		else: exp = 1
+		#####!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NEGATIVE EXPONENTS !!!!!!!!!!!!!!!!!!!!!
 		if re.findall("(\d+\^[\-?\d+])",number):
 			number = exponent(number)
 		#coeffients
@@ -506,7 +506,7 @@ def multiplication(string):
 			varB = exponent(var2)
 			part = varMul(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
-		#if mixed variables
+		#if variable and number
 		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*](\-?\d+\.?\d*\^?\d*)|(\-?\d+\.?\d*\^?\d*)[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
 			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*]",string)[0]
 			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",string)[0]
@@ -584,7 +584,7 @@ else:
 
 
 #testing
-print(multiplication("3*2x"))
+print(multiplication("3*2x^1"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
