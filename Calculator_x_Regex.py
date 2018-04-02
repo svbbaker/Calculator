@@ -157,7 +157,9 @@ def varMul(input1,input2):
 			#num is equal to the number before the variable
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
 
+
 			#############ADD IN PARENTHISIS INTO REGEX ABOVE (LOOK TO LAST SECTION IN CODE)!!!!!!!
+
 			
 			#if there are parenthisis symplify the inside
 			num = parenth(num)
@@ -389,7 +391,9 @@ def varMulComb(input1,input2):
 			n = float(n)
 			exp = exp + n 
 		else: exp = 1
+
 		#####!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NEGATIVE EXPONENTS !!!!!!!!!!!!!!!!!!!!!
+
 		if re.findall("(\d+\^[\-?\d+])",number):
 			number = exponent(number)
 		#coeffients
@@ -525,6 +529,45 @@ def multiplication(string):
 			string = string.replace(var1 + "*" + var2, str(part))
 	return(string)
 
+#Division
+def division(string):
+	while "/" in string:
+		#if variables
+		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
+			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\/]",string)[0]
+			var2 = re.findall("[\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
+			varA = exponent(var1)
+			varB = exponent(var2)
+			part = varDiv(varA,varB)
+			string = string.replace(var1 + "/" + var2, str(part))
+			print(string)
+		#if mixed variables
+		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\/](\-?\d+\.?\d*\^?\d*)|(\-?\d+\.?\d*\^?\d*)[\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
+			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\/]",string)[0]
+			var2 = re.findall("[\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",string)[0]
+			print("var1:  " + var1)
+			print("var2:  " + var2)
+			varA = exponent(var1)
+			varB = exponent(var2)
+			print("exponented:  " + var1)
+			print("exponented:  " + var2)
+			part = varDivComb(varA,varB)
+			string = string.replace(var1 + "/" + var2, str(part))
+			print(string)
+
+			##### Does not do coefficnet division correctly when x is in denominator !!!!!!!!!!!!!!!!!!
+
+		#if numbers
+		if re.findall("(\-?\d+\.?\d*\^?\d*)[\/](\-?\d+\.?\d*\^?\d*)",string):
+			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\/]",string)[0]
+			var2 = re.findall("[\/](\-?\d+\.?\d*\^?\d*)",string)[0]
+			varA = exponent(var1)
+			varB = exponent(var2)
+			part = varA + "/" + varB
+			part = md(part)
+			string = string.replace(var1 + "/" + var2, str(part))
+			print(string)		
+	return string
 
 #############################################################################################################################################################################################
 #############################################################################################################################################################################################
@@ -584,7 +627,7 @@ else:
 
 
 #testing
-print(multiplication("3*2x^1"))
+print(division("6x^4/2x"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
