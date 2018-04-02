@@ -452,36 +452,24 @@ def varDivComb(input1,input2):
 	if re.findall("\^(\-?\d+)",variable):
 		n = re.findall("\^(\-?\d+)",variable)[0]
 		n = float(n)
-		print(n)
 		if g == False:
 			exp = (exp + n -1)*(-1) #-1 so that we dont acount for an extera variable from count above
 		if h == False:
 			exp = exp + n - 1
 	if re.findall("(\d+\^[\-?\d+])",number):
-		print(number)
 		number = exponent(number)
-		print(number)
 	#coeffients
 	if re.findall("(?<![\^\-])[\-\d\.]+",variable):
 		n = re.findall("(?<![\^\-])[\-\d\.]+",variable)[0]
 		n = float(n)
-		print(n)
 		coef = coef * n
-		print(coef)
-	coef = coef * float(number)
-	print(coef)
+	#divide the coeffient in the polynomial and the number, by: denpending on which one is variable1
+	coef = coef / float(number)
 	a = "%s" %coef
 	b = "%s" %var
 	c = "^%s" %exp
 	answer = a+b+c
 
-
-	#else:
-	#	a = "%s" %input1
-	#	b = "%s" %input2
-	#	answer = a + "/" + b
-
-	print(answer)
 	return answer
 
 
