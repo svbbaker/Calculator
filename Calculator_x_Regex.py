@@ -406,7 +406,7 @@ def varMulComb(input1,input2):
 	else:
 		a = "%s" %input1
 		b = "%s" %input2
-		answer = a + "*" + b
+		answer = a + "/" + b
 
 	return answer
 
@@ -465,6 +465,7 @@ def varDivComb(input1,input2):
 		coef = coef * n
 	#divide the coeffient in the polynomial and the number, by: denpending on which one is variable1
 	coef = coef / float(number)
+
 	a = "%s" %coef
 	b = "%s" %var
 	c = "^%s" %exp
@@ -590,7 +591,7 @@ else:
 
 
 #testing
-print(varDivComb("8x^2","2"))
+print(multiplication("8x^2/2"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
