@@ -498,39 +498,32 @@ def exponent(string):
 #Multiplicaiton
 def multiplication(string):
 	while "*" in string:
-		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string): #if variables
-			print("yess!!!")
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/]",string)[0]
-			var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
+		#if variables
+		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
+			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*]",string)[0]
+			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varMul(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
-			print(string)
-		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)|(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string): #if mixed variables
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*\/]",string)[0]
-			var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",string)[0]
-			print("var1:  " + var1)
-			print("var2:  " + var2)
+		#if mixed variables
+		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*](\-?\d+\.?\d*\^?\d*)|(\-?\d+\.?\d*\^?\d*)[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
+			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*]",string)[0]
+			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
-			print("exponented:  " + var1)
-			print("exponented:  " + var2)
 			part = varMulComb(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
-			print(string)
-		if re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/](\-?\d+\.?\d*\^?\d*)",string): #if numbers
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\*\/]",string)[0]
-			var2 = re.findall("[\*\/](\-?\d+\.?\d*\^?\d*)",string)[0]
+		#if numbers
+		if re.findall("(\-?\d+\.?\d*\^?\d*)[\*](\-?\d+\.?\d*\^?\d*)",string):
+			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\*]",string)[0]
+			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*)",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varA + "*" + varB
 			part = md(part)
 			string = string.replace(var1 + "*" + var2, str(part))
-			print(string)
-		
-
-	return string
+	return(string)
 
 
 #############################################################################################################################################################################################
@@ -591,7 +584,7 @@ else:
 
 
 #testing
-print(multiplication("8x^2/2"))
+print(multiplication("3*2x"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
