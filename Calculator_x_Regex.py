@@ -25,7 +25,7 @@ def md(string):
 		if operator == '*':
 			answer = float(var1) * float(var2)
 		#else if division:
-		elif operator == '/': 
+		elif operator == '/':
 			answer = float(var1)/float(var2)
 		#replace the part in input string (var1 sybol var2) with the answer from the operation
 		string = string.replace(var1 + operator + var2, str(answer))
@@ -33,6 +33,7 @@ def md(string):
 	#return the new string
 	return string
 
+#NOT DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:
 #Addition and Subtraction
 def sumAll(string):
 	#print("Addition & Subtraction:")
@@ -146,7 +147,7 @@ def varMul(input1,input2):
 			#############ADD IN PARENTHISIS INTO REGEX ABOVE (LOOK TO LAST SECTION IN CODE)!!!!!!!
 
 			#if there are parenthisis symplify the inside
-			num = parenth(number)
+			num = parenth(num)
 			#makes num into numbers with decimals
 			num = float(num)
 			#coef is equal to former coef times the number before the variable - num -
@@ -159,7 +160,7 @@ def varMul(input1,input2):
 			#############ADD IN PARENTHISIS INTO REGEX ABOVE (LOOK TO LAST SECTION IN CODE)!!!!!!!
 			
 			#if there are parenthisis symplify the inside
-			num = parenth(number)
+			num = parenth(num)
 			#makes num into numbers with decimals
 			num = float(num)
 			#coef is equal to former coef times the number before the variable - num -
@@ -191,6 +192,7 @@ def varMul(input1,input2):
 def varDiv(input1,input2):
 	#print("Variable Division:")
 
+	#defining variables: exponent initialy 0, coefficient initially 1 ('cause multiplication)
 	exp = 0
 	coef = 1
 	
@@ -285,7 +287,7 @@ def varAdd(input1,input2):
 	else:
 		a = "%s" %input1
 		b = "%s" %input2
-		answer = a + "*" + b
+		answer = a + "+" + b
 
 	return answer
 
@@ -332,7 +334,7 @@ def varSub(input1,input2):
 	else:
 		a = "%s" %input1
 		b = "%s" %input2
-		answer = a + "*" + b
+		answer = a + "-" + b
 
 	return answer
 
@@ -364,6 +366,8 @@ def varMulComb(input1,input2):
 	else: #else
 		num = input2 #input2 is equal to num
 		h = False #and h is false
+
+	################!!!!!!!!!!!!!!!!!!!!!!! if variable in both: break !!!!!!!!!!!!!!!!!!!!!!!
 
 	if g == True:
 		variable = input1
@@ -440,24 +444,30 @@ def varDivComb(input1,input2):
 	if re.findall("(\-[a-z])",input2):
 		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 
-	#if g == False: #if they are not the same then there is a value for var and num
-	#num of variable occerences
+	#if g == False:
+	#if they are not the same then there is a value for var and num
+	#number of variable occerences
 	exp = variable.count(var)
 	#exponents
 	if re.findall("\^(\-?\d+)",variable):
 		n = re.findall("\^(\-?\d+)",variable)[0]
 		n = float(n)
+		print(n)
 		if g == False:
 			exp = (exp + n -1)*(-1) #-1 so that we dont acount for an extera variable from count above
 		if h == False:
 			exp = exp + n - 1
 	if re.findall("(\d+\^[\-?\d+])",number):
+		print(number)
 		number = exponent(number)
+		print(number)
 	#coeffients
 	if re.findall("(?<![\^\-])[\-\d\.]+",variable):
 		n = re.findall("(?<![\^\-])[\-\d\.]+",variable)[0]
 		n = float(n)
+		print(n)
 		coef = coef * n
+		print(coef)
 	coef = coef * float(number)
 	print(coef)
 	a = "%s" %coef
@@ -536,7 +546,7 @@ def multiplication(string):
 
 #############################################################################################################################################################################################
 #############################################################################################################################################################################################
-
+ 
 def distrib(string):
 	print("Distributive Property:")
 	if re.findall("((\-?\d+\.?\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?|\-?[a-z]+\^?\(?.+\)?\d?\^?\(?.+\)?)\(.+\))",string):
@@ -590,20 +600,9 @@ if debug:
 else:
 	operation = input("What calculation would you like to complete:")
 
-#performing calulations in order of operation:	
-#operation = parenth(operation)
-#operation = exponent(operation)
-#operation = md(operation)
-#operation = sumAll(operation)
 
-#print("the answer to your calculation is: " + str(operation))
-
-function = '5x^2+2(5^2x*2x+2*3^2+2x^2*5^2)'
-#print(function)
-#finction = multiplication(function)
-#function = distrib(function)
-print(multiplication("6y^6*3x^4"))
-#exponent("5^2x*2x+2*3^2+2x^2*5^2")
+#testing
+print(varDivComb("8x^2","2"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
