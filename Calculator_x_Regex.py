@@ -627,7 +627,7 @@ else:
 
 
 #testing
-print(division("6x^4/2x"))
+print(division("x/2"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
