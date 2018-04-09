@@ -33,29 +33,23 @@ def md(string):
 	#return the new string
 	return string
 
-#NOT DONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:
 #Addition and Subtraction
 def sumAll(string):
 	#print("Addition & Subtraction:")
-	#if there is a + or - in the input string then run loop
-	if '+' in string or '-' in string:
-		#iterate throught the symbols in the string using i
-		for i in string:
-			#if i is equal to + or -
-			if i == '+' in string or i == '-' in string:
-				#finds the pieces around the sybol + or -
-				line = re.findall("(\-?\d\.?\d*e\+\d+|\-?\(?\d+\.?\d*\)?)", string)
-				#sum the piecies using a for loop
-				answer = sum(float(x) for x in line)
-				#break out of if 
-				break
-	#if there is no + or - sybol in input string:
-	else:
-		#keep the answer equal to the intial string
-		answer = string
-
+	#parameter for the while loop
+	param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)
+	#while there is more than one part 
+	while len(param) > 0:
+		#finds the pieces around the sybol + or -
+		line = param[0]
+		#sum the piecies using a for loop
+		answer = float(line[0]) + float(line[1]+line[2])
+		#replace the part (pieces of line) in input string with the answer from the operation
+		string = string.replace(str(line[0]) + str(line[1]) + str(line[2]), str(answer))
+		#update pameramter
+		param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)	
 	#return the new string
-	return answer
+	return string
 
 #Parenthisis
 def parenth(string):
@@ -230,7 +224,7 @@ def varDiv(input1,input2):
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
 			num = float(num)
-			coef = coef * num #WONT LET ME MULTIPLY FLOATS
+			coef = coef * num
 		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
 			num = float(num)
@@ -345,9 +339,6 @@ def varSub(input1,input2):
 #############################################################################################################################################################################################
 #MIXED
 
-###########ENCORPERATE PARENTHISIS:
-
-
 #variable combined multiplicaiton
 def varMulComb(input1,input2):
 	#print("Variable Combined Multiplicaiton:")
@@ -369,7 +360,11 @@ def varMulComb(input1,input2):
 		num = input2 #input2 is equal to num
 		h = False #and h is false
 
-	################!!!!!!!!!!!!!!!!!!!!!!! if variable in both: break !!!!!!!!!!!!!!!!!!!!!!!
+		#replace -x with -1x
+	if re.findall("(\-[a-z])",input1):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var)
+	if re.findall("(\-[a-z])",input2):
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var)
 
 	if g == True:
 		variable = input1
@@ -378,11 +373,6 @@ def varMulComb(input1,input2):
 		variable = input2
 	else: number = input2
 
-	#replace -x with -1x
-	if re.findall("(\-[a-z])",input1):
-		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
-	if re.findall("(\-[a-z])",input2):
-		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 
 	if g != h: #if they are not the same then there is a value for var and num
 		#exponents
@@ -391,8 +381,6 @@ def varMulComb(input1,input2):
 			n = float(n)
 			exp = exp + n 
 		else: exp = 1
-
-		#####!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NEGATIVE EXPONENTS !!!!!!!!!!!!!!!!!!!!!
 
 		if re.findall("(\d+\^[\-?\d+])",number):
 			number = exponent(number)
@@ -410,9 +398,15 @@ def varMulComb(input1,input2):
 	else:
 		a = "%s" %input1
 		b = "%s" %input2
-		answer = a + "/" + b
+		answer = a + "*" + b
 
 	return answer
+
+############
+# for both combined
+# needs to be able to process: x/2
+# if no coef, coef is = 1
+############
 
 #variable combined division
 def varDivComb(input1,input2):
@@ -435,6 +429,12 @@ def varDivComb(input1,input2):
 		num = input2 #input2 is equal to num
 		h = False #and h is false
 
+	#replace -x with -1x 
+	if re.findall("(\-[a-z])",input1):
+		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var)
+	if re.findall("(\-[a-z])",input2):
+		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var)
+
 	if g == True:
 		variable = input1
 	else: number = input1
@@ -442,23 +442,15 @@ def varDivComb(input1,input2):
 		variable = input2
 	else: number = input2
 
-	#replace -x with -1x
-	if re.findall("(\-[a-z])",input1):
-		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
-	if re.findall("(\-[a-z])",input2):
-		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
-
-	#if g == False:
-	#if they are not the same then there is a value for var and num
 	#number of variable occerences
 	exp = variable.count(var)
 	#exponents
 	if re.findall("\^(\-?\d+)",variable):
 		n = re.findall("\^(\-?\d+)",variable)[0]
 		n = float(n)
-		if g == False:
-			exp = (exp + n -1)*(-1) #-1 so that we dont acount for an extera variable from count above
 		if h == False:
+			exp = (exp + n -1)*(-1) #-1 so that we dont acount for an extera variable from count above
+		if g == False:
 			exp = exp + n - 1
 	if re.findall("(\d+\^[\-?\d+])",number):
 		number = exponent(number)
@@ -467,8 +459,11 @@ def varDivComb(input1,input2):
 		n = re.findall("(?<![\^\-])[\-\d\.]+",variable)[0]
 		n = float(n)
 		coef = coef * n
-	#divide the coeffient in the polynomial and the number, by: denpending on which one is variable1
-	coef = coef / float(number)
+	#divide the coeffient before the polynomial and the number (depending on which one has the variable)
+	if h == True:
+		coef = float(number) / coef
+	if g == True:
+		coef = coef / float(number)
 
 	a = "%s" %coef
 	b = "%s" %var
@@ -496,8 +491,6 @@ def exponent(string):
 		string = string.replace(var1 + "^" + var2, str(answer))
 		print(string)
 	return string
-
-###########ENCORPERATE PARENTHISIS:
 
 #Multiplicaiton
 def multiplication(string):
@@ -627,7 +620,7 @@ else:
 
 
 #testing
-print(division("x/2"))
+print(varDivComb("4","x"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer

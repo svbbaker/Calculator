@@ -3,31 +3,25 @@ import re
 #Addition and Subtraction
 def sumAll(string):
 	#print("Addition & Subtraction:")
-	#if there is a + or - in the input string then run loop
-	while '+' in string or '-' in string:
-		#iterate throught the symbols in the string using i
-		#for i in string:
-			#if i is equal to + or -
-			#if i == '+' in string or i == '-' in string:
+	#while there is a + or - in the input string then run loop
+	param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)
+
+	while len(param) > 0:
+ 
 		#finds the pieces around the sybol + or -
-		line = re.findall("([\+\-]?\-?\(?\d+\.?\d*\)?|)([\+\-]\-?\(?\d+\.?\d*\)?)", string)[0] ###ENCORPERATE E: (\-?\d\.?\d*e\+\d+|\-?\(?\d+\.?\d*\)?)
-		#sum the piecies using a for loop
+		line = param[0]
 		print(line)
-			# l = "6","7"
-			# print("test:")
-			# print(l)
-			# print(sum(float(x) for x in l))
-		answer = sum(float(x) for x in line) #for converts to float
+		#sum the piecies using a for loop
+		answer = float(line[0]) + float(line[1]+line[2]) #for converts to float
+		print(string)
 		print(answer)
-		#break out of if 
-		#break
-	#if there is no + or - sybol in input string:
-	else:
-		#keep the answer equal to the intial string
-		answer = string
+		#replace the part (pieces of line) in input string with the answer from the operation
+		string = string.replace(str(line[0]) + str(line[1]) + str(line[2]), str(answer))
 
+		param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)
 	#return the new string
-	return answer
+	return string
 
 
-print(sumAll("3+4*4-3+5"))
+print(sumAll("5-17+21-78"))
+
