@@ -448,12 +448,18 @@ def varDivComb(input1,input2):
 	if re.findall("\^(\-?\d+)",variable):
 		n = re.findall("\^(\-?\d+)",variable)[0]
 		n = float(n)
-		if h == False:
-			exp = (exp + n -1)*(-1) #-1 so that we dont acount for an extera variable from count above
 		if g == False:
+			exp = (exp + n -1) #-1 so that we dont acount for an extera variable from count above
+		if h == False:
 			exp = exp + n - 1
 	if re.findall("(\d+\^[\-?\d+])",number):
 		number = exponent(number)
+	#if no exponent (sill need to be able to account for an x in the denominator as x^-1 in the answer)
+	if re.findall("(?<![\^\-])",variable):
+		if g == False:
+			exp = (-1) * exp
+		if h == False:
+			exp = exp
 	#coeffients
 	if re.findall("(?<![\^\-])[\-\d\.]+",variable):
 		n = re.findall("(?<![\^\-])[\-\d\.]+",variable)[0]
@@ -620,7 +626,7 @@ else:
 
 
 #testing
-print(varDivComb("4","x"))
+print(varDivComb("4x^2","2"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
