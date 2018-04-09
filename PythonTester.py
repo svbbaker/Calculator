@@ -1,15 +1,19 @@
 import re
 
+#selects term with exponents (ex: 3.2x^2y )
+TERM = "\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?"
+
 def distrib(string):
 	print("Distributive Property:")
-	if re.findall("((\-?\d+\.?\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?|\-?[a-z]+\^?\(?.+\)?\d?\^?\(?.+\)?)\(.+\))",string):
+	if re.findall(TERM + "\(.+\)",string):
 		inside = re.findall("\((.+)\)",string)[0]
-		#doenst work when extera parenth inside:
-		#num = re.findall("[\+\-](\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?)\(.+\)",string)[0] ######HELPPPPPP
-		######HELPPPPPP
-		######HELPPPPPP
-		num = re.findall("(\d+)\(.+\)",string)[0]
-		#num = exponent(num)
+		print("inside: " + inside)
+
+		######re.findall("(" + TERM + ")" +"\(.+\)",string)
+		#doenst work when extera parenth inside
+
+		num = re.findall("(\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?)\(.+\)",string)[0]
+		num = exponent(num)
 		#nun = multiplication(num)
 		#num = division(num)
 		print("num: " + num)
@@ -38,5 +42,5 @@ def distrib(string):
 		
 	return string
 
-print(distrib("3x(1+2x)"))
+print(distrib("3^2(1+2x)"))
 

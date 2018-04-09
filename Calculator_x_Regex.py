@@ -36,7 +36,7 @@ def md(string):
 	return string
 
 #Addition and Subtraction
-def sumAll(string):
+def sumNums(string):
 	#print("Addition & Subtraction:")
 	#parameter for the while loop
 	param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)
@@ -65,7 +65,7 @@ def parenth(string):
 		answer = parenth(part)
 		answer = exponent(answer)
 		answer = multiplication(answer)
-		answer = sumAll(answer)
+		answer = sumNums(answer)
 		
 		#replace the part in input string inside the parenthisis inclusive, with the answer from the operation itteration
 		string = string.replace("(" + part + ")", str(answer))
@@ -566,39 +566,26 @@ def division(string):
  
 def distrib(string):
 	print("Distributive Property:")
-	if re.findall(TERM+"\(.\)",string):
+	if re.findall(TERM + "\(.+\)",string):
+		outside = re.findall("(\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?)\(.+\)",string)[0]
+		print("outside: " + outside)
 		inside = re.findall("\((.+)\)",string)[0]
-		#doenst work when extera parenth inside:
-		#num = re.findall("[\+\-](\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?)\(.+\)",string)[0] ######HELPPPPPP
-		######HELPPPPPP
-		######HELPPPPPP
-		num = re.findall("(\d+)\(.+\)",string)[0]
-		#num = exponent(num)
-		#nun = multiplication(num)
-		#num = division(num)
-		print("num: " + num)
-		#PARENTHISIS
-		#inside = parenthisis(inside)
-		inside = multiplication(inside)
-		print("string = " + inside)
-		#split into + and - 
-		var1 = re.findall("(\d+\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?[a-z]?\^?\(?\-?\d?\.?\d?[a-z]?\)?|\-?[a-z]+\^?\(?\-?\d?\.?\d?[a-z]?\)?\d?\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?)[\+\-]",inside)[0]
-		var2 = re.findall("[\+\-](\d+\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?[a-z]?\^?\(?\-?\d?\.?\d?[a-z]?\)?|\-?[a-z]+\^?\(?\-?\d?\.?\d?[a-z]?\)?\d?\.?\d?\^?\(?\-?\d?\.?\d?[a-z]?\)?)",inside)[0]
-		print("v1:" + var1)
-		print("v2:" + var2)
-		#creating new string to multiply in the coeficient before the inside (...)
-		#####DID NOT WORK WITH OTHER FOR LOOP
-
-		#sorting into array sothat num can be multipled to it
-		#for i in range(0,len(var1)+len(var2)):
-		#	m = "*"
-		#	###WHAT DO I DO INSTEAD OF SOMETHING
-		#	something = "+"
-		#	newstring1 = num + m + var1[i]
-		#	newstring2 = num + m + var2[i]
-		#	newstring = 
-		#	print(newstring)
-		#print("newstring: "+newstring)
+		print("inside: " + inside)
+		terms = re.findall("[^\+\-]+",inside)
+		print("terms: ")
+		print(terms)
+		operator = re.findall("[\+\-]+",inside)
+		print("oporator: ")
+		print(operator)
+		for i in range(len(terms)):
+			print("print:")
+			print(outside)
+			print(terms[i])
+			#l = outside + "*" + str(terms[i])
+			#print(l)
+			ans = multiplication(outside + "*" + str(terms[i]))
+			print("ans:")
+			print(ans)
 		
 	return string
 
@@ -619,7 +606,8 @@ else:
 
 
 #testing
-print(division("4x^2/2"))
+#print(multiplication("3x*2*3"))
+print(distrib("3x(2*3+2x-x^2)"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
