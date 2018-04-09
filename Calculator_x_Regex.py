@@ -5,6 +5,8 @@
 #Regex
 import re
 
+#selects term with exponents (ex: 3.2x^2y )
+TERM = "\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?"
 
 #############################################################################################################################################################################################
 #############################################################################################################################################################################################
@@ -402,12 +404,6 @@ def varMulComb(input1,input2):
 
 	return answer
 
-############
-# for both combined
-# needs to be able to process: x/2
-# if no coef, coef is = 1
-############
-
 #variable combined division
 def varDivComb(input1,input2):
 	#print("Variable Combined Division:")
@@ -553,9 +549,6 @@ def division(string):
 			part = varDivComb(varA,varB)
 			string = string.replace(var1 + "/" + var2, str(part))
 			print(string)
-
-			##### Does not do coefficnet division correctly when x is in denominator !!!!!!!!!!!!!!!!!!
-
 		#if numbers
 		if re.findall("(\-?\d+\.?\d*\^?\d*)[\/](\-?\d+\.?\d*\^?\d*)",string):
 			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\/]",string)[0]
@@ -573,7 +566,7 @@ def division(string):
  
 def distrib(string):
 	print("Distributive Property:")
-	if re.findall("((\-?\d+\.?\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?|\-?[a-z]+\^?\(?.+\)?\d?\^?\(?.+\)?)\(.+\))",string):
+	if re.findall(TERM+"\(.\)",string):
 		inside = re.findall("\((.+)\)",string)[0]
 		#doenst work when extera parenth inside:
 		#num = re.findall("[\+\-](\d?\^?\(?.+\)?[a-z]?\^?\(?.+\)?)\(.+\)",string)[0] ######HELPPPPPP
@@ -626,10 +619,7 @@ else:
 
 
 #testing
-print(varDivComb("4x^2","2"))
+print(division("4x^2/2"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
-
-
-
