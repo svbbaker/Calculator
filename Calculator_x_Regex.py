@@ -481,22 +481,28 @@ def varDivComb(input1,input2):
 
 #Exponents
 def exponent(string):
-	print("Exponents:")
+	#print("Exponents:")
 	while len(re.findall("(\(?\d+\.?\d*\)?)\^(\(?\d+\.?\d*\)?)",string))>0:
 		var1 = re.findall("(\(?\d+\.?\d*\)?)\^",string)[0]
-		print(var1)
 		var2 = re.findall("\^(\(?\d+\.?\d*\)?)",string)[0]
-		print("exp = " + var2)
 		answer = float(var1) ** float(var2)
-		print("answer:")
-		print(answer)
 		string = string.replace(var1 + "^" + var2, str(answer))
-		print(string)
 	return string
 
 #Multiplicaiton
 def multiplication(string):
 	while "*" in string:
+		#if numbers
+		if re.findall("(\-?\d+\.?\d*\^?\d*)[\*](\-?\d+\.?\d*\^?\d*)",string):
+			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\*]",string)[0]
+			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*)",string)[0]
+			#print(var1,var2)
+			varA = exponent(var1)
+			varB = exponent(var2)
+			#print(varA,varB)
+			part = varA + "*" + varB
+			part = md(part)
+			string = string.replace(var1 + "*" + var2, str(part))
 		#if variables
 		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
 			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*]",string)[0]
@@ -512,15 +518,6 @@ def multiplication(string):
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varMulComb(varA,varB)
-			string = string.replace(var1 + "*" + var2, str(part))
-		#if numbers
-		if re.findall("(\-?\d+\.?\d*\^?\d*)[\*](\-?\d+\.?\d*\^?\d*)",string):
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\*]",string)[0]
-			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*)",string)[0]
-			varA = exponent(var1)
-			varB = exponent(var2)
-			part = varA + "*" + varB
-			part = md(part)
 			string = string.replace(var1 + "*" + var2, str(part))
 	return(string)
 
@@ -565,28 +562,26 @@ def division(string):
 #############################################################################################################################################################################################
  
 def distrib(string):
-	print("Distributive Property:")
+	#print("Distributive Property:")
 	if re.findall(TERM + "\(.+\)",string):
 		outside = re.findall("(\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?)\(.+\)",string)[0]
-		print("outside: " + outside)
+		#print("outside: " + outside)
 		inside = re.findall("\((.+)\)",string)[0]
 		print("inside: " + inside)
+		inside = multiplication(inside)
+		#inside = division(inside)
+		print("inside: " + inside)
 		terms = re.findall("[^\+\-]+",inside)
-		print("terms: ")
-		print(terms)
+		#print("terms: ")
+		#print(terms)
 		operator = re.findall("[\+\-]+",inside)
-		print("oporator: ")
-		print(operator)
+		#print("oporator: ")
+		#print(operator)
 		for i in range(len(terms)):
-			print("print:")
-			print(outside)
-			print(terms[i])
-			#l = outside + "*" + str(terms[i])
-			#print(l)
 			ans = multiplication(outside + "*" + str(terms[i]))
 			print("ans:")
 			print(ans)
-		
+			#now: sort ans into a string (with oporators)	
 	return string
 
 

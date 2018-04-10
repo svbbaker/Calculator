@@ -13,7 +13,7 @@ def distrib(string):
 		#doenst work when extera parenth inside
 
 		num = re.findall("(\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?)\(.+\)",string)[0]
-		num = exponent(num)
+		#num = exponent(num)
 		#nun = multiplication(num)
 		#num = division(num)
 		print("num: " + num)
