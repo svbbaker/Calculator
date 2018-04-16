@@ -256,10 +256,10 @@ def varAdd(input1,input2):
 
 	if re.findall("\^(\-?\d+)",input1):
 		exp1 = re.findall("\^(\-?\d+)",input1)[0]
-	else: exp1 = True
+	else: exp1 = 1
 	if re.findall("\^(\-?\d+)",input2):
 		exp2 = re.findall("\^(\-?\d+)",input2)[0]
-	else: exp2 = True
+	else: exp2 = 1
 
 	#replace -x with -1x
 	if re.findall("(\-[a-z])",input1):
@@ -492,7 +492,7 @@ def exponent(string):
 #Multiplicaiton
 def multiplication(string):
 	while "*" in string:
-		#if number and leter
+		#if number and variable
 		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
 			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*",string)[0]
 			print("var 1:")
@@ -516,7 +516,6 @@ def multiplication(string):
 			print("var 2:")
 			print(var2)
 			varA = exponent(var1)
-
 			varB = exponent(var2)
 			part = varA + "*" + varB
 			part = md(part)
@@ -606,10 +605,10 @@ def summation(string):
 
 			if re.findall("\^(\-?\d+)",input1):
 				exp1 = re.findall("\^(\-?\d+)",input1)[0]
-			else: exp1 = True
+			else: exp1 = 1
 			if re.findall("\^(\-?\d+)",input2):
 				exp2 = re.findall("\^(\-?\d+)",input2)[0]
-			else: exp2 = True
+			else: exp2 = 1
 
 			#replace -x with -1x
 			if re.findall("(\-[a-z])",input1):
@@ -697,6 +696,7 @@ else:
 #testing
 #print(multiplication("2*x*2x*3*2"))
 print(summation("3+9+3x+9x"))
+#print(varAdd("3x","9x"))
 #print(distrib("3x(2*3+2x-4)"))
 
 
