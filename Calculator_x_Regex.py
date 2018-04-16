@@ -492,33 +492,52 @@ def exponent(string):
 #Multiplicaiton
 def multiplication(string):
 	while "*" in string:
-		#if numbers
-		if re.findall("(\-?\d+\.?\d*\^?\d*)[\*](\-?\d+\.?\d*\^?\d*)",string):
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\*]",string)[0]
-			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*)",string)[0]
-			#print(var1,var2)
+		# var = re.findall("([a-z])",string)
+		# #replace -x with -1x and x with 1x
+		# if re.findall("(\-[a-z])",string):
+		# 	string = string.replace(str(re.findall("(\-[a-z])",string)[0]), "-1%s"%var)
+		# if re.findall("(?<![\-])([a-z])",string):
+		# 	string = string.replace(str(re.findall("(?<![\-])([a-z])",string)[0]), "1%s"%var)
+		#if variable and number
+		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
+			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*",string)[0]
+			print("var 1:")
+			print(var1)
+			var2 = re.findall("(?<![\^])\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string)[0]
+			print("var2")
+			print(var2)
 			varA = exponent(var1)
 			varB = exponent(var2)
-			#print(varA,varB)
+			part = varMulComb(varA,varB)
+			print(part)
+			string = string.replace(var1 + "*" + var2, str(part))
+			print("string part 1")
+			print(string)
+		#if numbers
+		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)",string):
+			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*",string)[0]
+			var2 = re.findall("\-?\d+\.?\d*\^?\-?\d*\.?\d*[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)",string)[0]
+			print("var 1:")
+			print(var1)
+			print("var 2:")
+			print(var2)
+			varA = exponent(var1)
+			varB = exponent(var2)
 			part = varA + "*" + varB
 			part = md(part)
 			string = string.replace(var1 + "*" + var2, str(part))
+			print("string part 2")
+			print(string)
 		#if variables
-		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*]",string)[0]
-			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
+		if re.findall("(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\*](\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)",string):
+			var1 = re.findall("(?<![\^])(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\*]\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*",string)[0]
+			var2 = re.findall("\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*[\*](\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varMul(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
-		#if variable and number
-		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\*](\-?\d+\.?\d*\^?\d*)|(\-?\d+\.?\d*\^?\d*)[\*](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\*]",string)[0]
-			var2 = re.findall("[\*](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",string)[0]
-			varA = exponent(var1)
-			varB = exponent(var2)
-			part = varMulComb(varA,varB)
-			string = string.replace(var1 + "*" + var2, str(part))
+			print("string part 3")
+			print(string)
 	return(string)
 
 #Division
@@ -565,22 +584,35 @@ def distrib(string):
 	#print("Distributive Property:")
 	if re.findall(TERM + "\(.+\)",string):
 		outside = re.findall("(\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?)\(.+\)",string)[0]
-		#print("outside: " + outside)
 		inside = re.findall("\((.+)\)",string)[0]
-		print("inside: " + inside)
 		inside = multiplication(inside)
-		#inside = division(inside)
-		print("inside: " + inside)
 		terms = re.findall("[^\+\-]+",inside)
-		#print("terms: ")
-		#print(terms)
-		operator = re.findall("[\+\-]+",inside)
-		#print("oporator: ")
-		#print(operator)
-		for i in range(len(terms)):
-			ans = multiplication(outside + "*" + str(terms[i]))
+		operators = re.findall("[\+\-]+",inside)
+		answerTerms = []
+		print(terms)
+		for term in terms:
+			ans = multiplication(outside + "*" + str(term))
 			print("ans:")
 			print(ans)
+			answerTerms.append(ans)
+
+		print("answer terms:")
+		print(answerTerms)
+
+		answerString = ""
+		partString = []
+		if len(answerTerms) == len(operators) + 1:
+			for i in range(len(answerTerms)):
+				partString.append(answerTerms[i]+operators[i])
+				print(operators)
+				print("part of string")
+				print(partString)
+				answerString+=str(partString) #appends string since append does not work for strings
+		
+		print("answer string:")
+		print(answerString)
+				##append them in order to answer string ---- create summation thing and fix multiplication
+
 			#now: sort ans into a string (with oporators)	
 	return string
 
@@ -601,8 +633,8 @@ else:
 
 
 #testing
-#print(multiplication("3x*2*3"))
-print(distrib("3x(2*3+2x-x^2)"))
+print(multiplication("2*x*2x*3*2"))
+#print(distrib("3x(2*3+2x-4)"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
