@@ -492,13 +492,7 @@ def exponent(string):
 #Multiplicaiton
 def multiplication(string):
 	while "*" in string:
-		# var = re.findall("([a-z])",string)
-		# #replace -x with -1x and x with 1x
-		# if re.findall("(\-[a-z])",string):
-		# 	string = string.replace(str(re.findall("(\-[a-z])",string)[0]), "-1%s"%var)
-		# if re.findall("(?<![\-])([a-z])",string):
-		# 	string = string.replace(str(re.findall("(?<![\-])([a-z])",string)[0]), "1%s"%var)
-		#if variable and number
+		#if number and leter
 		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
 			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*",string)[0]
 			print("var 1:")
@@ -522,6 +516,7 @@ def multiplication(string):
 			print("var 2:")
 			print(var2)
 			varA = exponent(var1)
+
 			varB = exponent(var2)
 			part = varA + "*" + varB
 			part = md(part)
@@ -577,7 +572,74 @@ def division(string):
 			print(string)		
 	return string
 
-#############################################################################################################################################################################################
+#Summation
+def summation(string):
+	while "+" in string or "-" in string:
+		#if numbers 
+		if re.findall("(\-?\d+\.?\d*\^?\d*\^?\d*)[\+\-](\-?\d+\.?\d*\^?\d*\^?\d*)",string):
+			#parameter for the while loop
+			param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)
+			#while there is more than one part 
+			while len(param) > 0:
+				#finds the pieces around the sybol + or -
+				line = param[0]
+				#sum the piecies using a for loop
+				answer = float(line[0]) + float(line[1]+line[2])
+				#replace the part (pieces of line) in input string with the answer from the operation
+				string = string.replace(str(line[0]) + str(line[1]) + str(line[2]), str(answer))
+				#update pameramter
+				param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)	
+				#return the new string
+				return string
+		#if variables
+		if re.finall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
+			print("yes")
+			input1 = re.finall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-]\-?\d+\.?\d*\^?\d*[a-z]\^?\d*",string)[0]
+			input2 = re.finall("\-?\d+\.?\d*\^?\d*[a-z]\^?\d*[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
+			print(input1,input2)
+			coef = 0
+			#if variables
+			if re.findall("([a-z])",input1):
+				var1 = re.findall("([a-z])",input1)[0]
+			if re.findall("([a-z])",input2):
+				var2 = re.findall("([a-z])",input2)[0]
+
+			if re.findall("\^(\-?\d+)",input1):
+				exp1 = re.findall("\^(\-?\d+)",input1)[0]
+			else: exp1 = True
+			if re.findall("\^(\-?\d+)",input2):
+				exp2 = re.findall("\^(\-?\d+)",input2)[0]
+			else: exp2 = True
+
+			#replace -x with -1x
+			if re.findall("(\-[a-z])",input1):
+				input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
+			if re.findall("(\-[a-z])",input2):
+				input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
+
+			if var1 == var2 and exp1 == exp2:
+				#coeffients
+				if re.findall("(?<![\^\-])[\-\d\.]+",input1):
+					num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
+					num = float(num)
+					coef = coef + num 
+				if re.findall("(?<![\^\-])[\-\d\.]+",input2):
+					num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
+					num = float(num)
+					coef = coef + num
+				a = "%s" %coef
+				b = "%s" %var1
+				c = "^%s" %exp1
+				answer = a+b+c
+
+			else:
+				a = "%s" %input1
+				b = "%s" %input2
+				answer = a + "+" + b
+	#return the new string
+	return string
+
+############################################################################################################################################################################################
 #############################################################################################################################################################################################
  
 def distrib(string):
@@ -633,7 +695,8 @@ else:
 
 
 #testing
-print(multiplication("2*x*2x*3*2"))
+#print(multiplication("2*x*2x*3*2"))
+print(summation("3+9+3x+9x"))
 #print(distrib("3x(2*3+2x-4)"))
 
 
