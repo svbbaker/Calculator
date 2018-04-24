@@ -39,13 +39,14 @@ def md(string):
 def sumNums(string):
 	#print("Addition & Subtraction:")
 	#parameter for the while loop
-	param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)
+	param = re.findall("[\+\-\*\/]?(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\+\-\*\/]?", string)
 	#while there is more than one part 
 	while len(param) > 0:
 		#finds the pieces around the sybol + or -
 		line = param[0]
 		#sum the piecies using a for loop
 		answer = float(line[0]) + float(line[1]+line[2])
+		print(answer)
 		#replace the part (pieces of line) in input string with the answer from the operation
 		string = string.replace(str(line[0]) + str(line[1]) + str(line[2]), str(answer))
 		#update pameramter
@@ -303,10 +304,10 @@ def varSub(input1,input2):
 
 	if re.findall("\^(\-?\d+)",input1):
 		exp1 = re.findall("\^(\-?\d+)",input1)[0]
-	else: exp1 = True
+	else: exp1 = 1
 	if re.findall("\^(\-?\d+)",input2):
 		exp2 = re.findall("\^(\-?\d+)",input2)[0]
-	else: exp2 = True
+	else: exp2 = 1
 
 	#replace -x with -1x
 	if re.findall("(\-[a-z])",input1):
@@ -362,7 +363,7 @@ def varMulComb(input1,input2):
 		num = input2 #input2 is equal to num
 		h = False #and h is false
 
-		#replace -x with -1x
+	#replace -x with -1x
 	if re.findall("(\-[a-z])",input1):
 		input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var)
 	if re.findall("(\-[a-z])",input2):
@@ -491,37 +492,34 @@ def exponent(string):
 
 #Multiplicaiton
 def multiplication(string):
+	print(string)
+	#while loop to make sure this is done correctly
+	while re.findall("(\-[a-z])",string) or re.findall("\*[a-z]",string) or string[0] == re.findall("[a-z]",string)[0]:
+		#replace -var with -1var
+		if re.findall("(\-[a-z])",string):
+			var = re.findall("\-([a-z])",string)[0]
+			string = string.replace(str(re.findall("(\-[a-z])",string)[0]), "-1%s"%var)
+		#replace var with 1var
+		if re.findall("(\*[a-z])",string):
+			var = re.findall("\*([a-z])",string)[0]
+			string = string.replace(str(re.findall("(\*[a-z])",string)[0]), "*1%s"%var)
+		#if first index is variable then replace it with 1var
+		if string[0] == re.findall("[a-z]",string)[0]:
+			var = string[0]
+			string = string.replace(string[0], "1%s"%var)
+	print(string)
 	while "*" in string:
-		#if number and variable
-		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
-			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*",string)[0]
-			print("var 1:")
-			print(var1)
-			var2 = re.findall("(?<![\^])\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string)[0]
-			print("var2")
-			print(var2)
-			varA = exponent(var1)
-			varB = exponent(var2)
-			part = varMulComb(varA,varB)
-			print(part)
-			string = string.replace(var1 + "*" + var2, str(part))
-			print("string part 1")
-			print(string)
 		#if numbers
-		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)",string):
-			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*",string)[0]
-			var2 = re.findall("\-?\d+\.?\d*\^?\-?\d*\.?\d*[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)",string)[0]
-			print("var 1:")
-			print(var1)
-			print("var 2:")
-			print(var2)
+		if re.findall("[\+\-\*\/]?(\+?\-?\(?\d+\.?\d*\)?)[\*](\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\+\-\*\/]?",string):
+			print("yes")
+			var1 = re.findall("[\*\/]?(\+?\-?\(?\d+\.?\d*\)?)[\*]\+?\-?\(?\d+\.?\d*\)?(?![a-z])[\*\/]?",string)[0]
+			var2 = re.findall("[\*\/]?\+?\-?\(?\d+\.?\d*\)?[\*](\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\*\/]?",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varA + "*" + varB
 			part = md(part)
 			string = string.replace(var1 + "*" + var2, str(part))
-			print("string part 2")
-			print(string)
+		print("1:",string)
 		#if variables
 		if re.findall("(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\*](\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)",string):
 			var1 = re.findall("(?<![\^])(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\*]\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*",string)[0]
@@ -530,111 +528,91 @@ def multiplication(string):
 			varB = exponent(var2)
 			part = varMul(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
-			print("string part 3")
-			print(string)
+		print("2:",string)
+		#if number and variable
+		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
+			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*",string)[0]
+			var2 = re.findall("(?<![\^])\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string)[0]
+			print("var1+2:",var1,var2)
+			varA = exponent(var1)
+			varB = exponent(var2)
+			part = varMulComb(varA,varB)
+			string = string.replace(var1 + "*" + var2, str(part))
+		print("3:",string)
 	return(string)
 
 #Division
 def division(string):
 	while "/" in string:
-		#if variables
-		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\/]",string)[0]
-			var2 = re.findall("[\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
-			varA = exponent(var1)
-			varB = exponent(var2)
-			part = varDiv(varA,varB)
-			string = string.replace(var1 + "/" + var2, str(part))
-			print(string)
-		#if mixed variables
-		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\/](\-?\d+\.?\d*\^?\d*)|(\-?\d+\.?\d*\^?\d*)[\/](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)[\/]",string)[0]
-			var2 = re.findall("[\/](\-?\d+\.?\d*\^?\d*[a-z]?\^?\d*)",string)[0]
-			print("var1:  " + var1)
-			print("var2:  " + var2)
-			varA = exponent(var1)
-			varB = exponent(var2)
-			print("exponented:  " + var1)
-			print("exponented:  " + var2)
-			part = varDivComb(varA,varB)
-			string = string.replace(var1 + "/" + var2, str(part))
-			print(string)
+		#replace -x with -1x
+		if re.findall("(\-[a-z])",string):
+			var = re.findall("\-([a-z])",string)[0]
+			string = string.replace(str(re.findall("(\-[a-z])",string)[0]), "-1%s"%var)
+		#replace x with 1x
+		if re.findall("(\/?[a-z])",string):
+			var = re.findall("\/?([a-z])",string)[0] 
+			string = string.replace(str(re.findall("(\/[a-z])",string)[0]), "/1%s"%var)
+			####only errors the second time through...?
 		#if numbers
-		if re.findall("(\-?\d+\.?\d*\^?\d*)[\/](\-?\d+\.?\d*\^?\d*)",string):
-			var1 = re.findall("(\-?\d+\.?\d*\^?\d*)[\/]",string)[0]
-			var2 = re.findall("[\/](\-?\d+\.?\d*\^?\d*)",string)[0]
+		if re.findall("[\+\-\*\/]?(\+?\-?\(?\d+\.?\d*\)?)[\/](\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\+\-\*\/]?",string):
+			print("yes")
+			var1 = re.findall("[\*\/]?(\+?\-?\(?\d+\.?\d*\)?)[\/]\+?\-?\(?\d+\.?\d*\)?(?![a-z])[\*\/]?",string)[0]
+			var2 = re.findall("[\*\/]?\+?\-?\(?\d+\.?\d*\)?[\/](\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\*\/]?",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varA + "/" + varB
 			part = md(part)
 			string = string.replace(var1 + "/" + var2, str(part))
-			print(string)		
-	return string
+		print("1:",string)
+		#if variables
+		if re.findall("(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\/](\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)",string):
+			var1 = re.findall("(?<![\^])(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\/]\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*",string)[0]
+			var2 = re.findall("\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*[\/](\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)",string)[0]
+			varA = exponent(var1)
+			varB = exponent(var2)
+			part = varDiv(varA,varB)
+			string = string.replace(var1 + "/" + var2, str(part))
+		print("2:",string)
+		#if number and variable
+		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\/](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
+			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\/]\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*",string)[0]
+			var2 = re.findall("(?<![\^])\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*[\/](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string)[0]
+			print("var1+2:",var1,var2)
+			varA = exponent(var1)
+			varB = exponent(var2)
+			part = varDivComb(varA,varB)
+			string = string.replace(var1 + "/" + var2, str(part))
+		print("3:",string)
+		break
+	return(string)
 
 #Summation
 def summation(string):
-	while "+" in string or "-" in string:
+	####need to sort it so that can solve 3x-9x+14-2+2x :: currently it can only do 3x-9x+14-2
+	if re.findall(".(\-).",string):
+		minus = True
+	else: minus = False
+
+	while "+" in string in string or minus == True:
 		#if numbers 
 		if re.findall("(\-?\d+\.?\d*\^?\d*\^?\d*)[\+\-](\-?\d+\.?\d*\^?\d*\^?\d*)",string):
-			#parameter for the while loop
-			param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)
-			#while there is more than one part 
-			while len(param) > 0:
-				#finds the pieces around the sybol + or -
-				line = param[0]
-				#sum the piecies using a for loop
-				answer = float(line[0]) + float(line[1]+line[2])
-				#replace the part (pieces of line) in input string with the answer from the operation
-				string = string.replace(str(line[0]) + str(line[1]) + str(line[2]), str(answer))
-				#update pameramter
-				param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)	
-				#return the new string
-				return string
-		#if variables
-		if re.finall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
-			print("yes")
-			input1 = re.finall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-]\-?\d+\.?\d*\^?\d*[a-z]\^?\d*",string)[0]
-			input2 = re.finall("\-?\d+\.?\d*\^?\d*[a-z]\^?\d*[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
-			print(input1,input2)
-			coef = 0
-			#if variables
-			if re.findall("([a-z])",input1):
-				var1 = re.findall("([a-z])",input1)[0]
-			if re.findall("([a-z])",input2):
-				var2 = re.findall("([a-z])",input2)[0]
+			string = sumNums(string)
+		#if variables +
+		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
+			input1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-]\-?\d+\.?\d*\^?\d*[a-z]\^?\d*",string)[0]
+			input2 = re.findall("\-?\d+\.?\d*\^?\d*[a-z]\^?\d*[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
+			#print(input1,input2)
+			part = varAdd(input1,input2)
+			string = string.replace(input1 + "+" + input2, str(part))
+		#if variables -
+		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
+			input1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-]\-?\d+\.?\d*\^?\d*[a-z]\^?\d*",string)[0]
+			input2 = re.findall("\-?\d+\.?\d*\^?\d*[a-z]\^?\d*[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
+			#print(input1,input2)
+			part = varSub(input1,input2)
+			string = string.replace(input1 + "-" + input2, str(part))
+			break
 
-			if re.findall("\^(\-?\d+)",input1):
-				exp1 = re.findall("\^(\-?\d+)",input1)[0]
-			else: exp1 = 1
-			if re.findall("\^(\-?\d+)",input2):
-				exp2 = re.findall("\^(\-?\d+)",input2)[0]
-			else: exp2 = 1
-
-			#replace -x with -1x
-			if re.findall("(\-[a-z])",input1):
-				input1 = input1.replace(str(re.findall("(\-[a-z])",input1)[0]), "-1%s"%var1)
-			if re.findall("(\-[a-z])",input2):
-				input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
-
-			if var1 == var2 and exp1 == exp2:
-				#coeffients
-				if re.findall("(?<![\^\-])[\-\d\.]+",input1):
-					num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
-					num = float(num)
-					coef = coef + num 
-				if re.findall("(?<![\^\-])[\-\d\.]+",input2):
-					num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
-					num = float(num)
-					coef = coef + num
-				a = "%s" %coef
-				b = "%s" %var1
-				c = "^%s" %exp1
-				answer = a+b+c
-
-			else:
-				a = "%s" %input1
-				b = "%s" %input2
-				answer = a + "+" + b
 	#return the new string
 	return string
 
@@ -643,18 +621,26 @@ def summation(string):
  
 def distrib(string):
 	#print("Distributive Property:")
+	#if something is multiplied by a (..,)
 	if re.findall(TERM + "\(.+\)",string):
+		#term multiplied with (...)
 		outside = re.findall("(\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?)\(.+\)",string)[0]
+		#piece inside the ()
 		inside = re.findall("\((.+)\)",string)[0]
+		#simplifiying the inside
 		inside = multiplication(inside)
+		inside = division(inside)
+		#simplified terms of inside (spererated by + or -)
 		terms = re.findall("[^\+\-]+",inside)
+		#operators (+ or -) between terms
 		operators = re.findall("[\+\-]+",inside)
+		#answerterms array defined
 		answerTerms = []
-		print(terms)
+		#multiply terms with outside - multiply out
 		for term in terms:
+			#ans is = to the new multiplied out terms
 			ans = multiplication(outside + "*" + str(term))
-			print("ans:")
-			print(ans)
+			#link all the new terms (ans) together
 			answerTerms.append(ans)
 
 		print("answer terms:")
@@ -663,18 +649,21 @@ def distrib(string):
 		answerString = ""
 		partString = []
 		if len(answerTerms) == len(operators) + 1:
-			for i in range(len(answerTerms)):
+			for i in range(len(answerTerms)-1):
 				partString.append(answerTerms[i]+operators[i])
 				print(operators)
 				print("part of string")
 				print(partString)
-				answerString+=str(partString) #appends string since append does not work for strings
-		
-		print("answer string:")
-		print(answerString)
-				##append them in order to answer string ---- create summation thing and fix multiplication
-
-			#now: sort ans into a string (with oporators)	
+				#answerString.append(partString)
+				answerString+=str(partString) #appends string since append does not work for string
+				##### need to be able to add: +answerTerms[-1] (so last piece of answerTerms onto it too)
+				print("answer string:")
+				print(answerString)
+			#####doesnt get out of for loop?!?!?!?!?
+			answerString = summation(answerString)
+			print("answerString final:")
+			print(answerString)
+			#####needs to be able to do it out of order (ex: 3x+2-2x+10 = 12+x)	
 	return string
 
 
@@ -694,9 +683,10 @@ else:
 
 
 #testing
-#print(multiplication("2*x*2x*3*2"))
-print(summation("3+9+3x+9x"))
-#print(varAdd("3x","9x"))
+#print(varMulComb("2","x"))
+print(multiplication("2*4x^2*-x*x"))
+#print(summation("3x-9x+14-2+2x"))
+#print(varMul("3y","9x"))
 #print(distrib("3x(2*3+2x-4)"))
 
 
