@@ -40,33 +40,28 @@ def md(string):
 #Addition and Subtraction
 def sumNums(string):
 	#print("Addition & Subtraction:")
+	#adds plus to string in order to enable creating final string as the last step of sumNums
+	string = "+" + string
 	#finding all the pieces in the string
 	pieces = re.findall("([+-]?\d+[a-z]?)",string)
-	print(pieces)
 	#string for variables
-	variables = []
+	variables = ""
 	#sorts out variables in pieces and creats new string with variables
 	#creats an intterative piece of pieces
 	for piece in pieces:
 		#if there is a variable piece
 		if re.findall("[a-z]",piece):
-			print(piece)
 			#creats new string with pieces 
-			variables.append(pieces)
-			#print(variables)
+			variables += piece
 			#remove the pice (if it contains a variable)
 			pieces.remove(piece)
-	print("pieces:")
-	print(pieces)
-	print("variabels:")
-	print(variables)
-	#########VARIABLES: needs to be string, but cannot append a string, and must put in the right things!
+	#sumes pieces
 	answer = sum(float(a) for a in pieces)
-	print(answer)
+	#enabels adding answer to string
 	z = "%s" %answer
-	#update string with answer for all added numbers attated to front of string
-	string = z + re.sub("([\+\-]?\d+)[\+\-]","",string)
-	print(string)
+	#update string with answer for all added numbers attated to front of variable string
+	string = z + variables
+	return string
 
 
 
@@ -714,7 +709,7 @@ else:
 #testing
 #print(varMulComb("2","x"))
 #print(multiplication("2*4x^2*-x*x"))
-print(sumNums("2-3x+4-9x+8-11+21x-3-5"))
+print(sumNums("3x+4-9x+8-11+21y-3-5"))
 #print(varMul("3y","9x"))
 #print(distrib("3x(2*3+2x-4)"))
 
