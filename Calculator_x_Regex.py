@@ -1,5 +1,7 @@
 #Calulator
 #Sophia Baker
+#Independant Competer Science
+#Mr. Guillaume Sparrow-Peppin
 #2018
 
 #Regex
@@ -12,7 +14,7 @@ TERM = "\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?"
 #############################################################################################################################################################################################
 #NUMBERS
 
-#Multiplication and Division
+#Multiplication and Division (only applicable if no * of / in string)
 def md(string):
 	#print("Multiplication & Division:")
 	#if there is a * or / in the input string then run loop until there is not another
@@ -38,21 +40,35 @@ def md(string):
 #Addition and Subtraction
 def sumNums(string):
 	#print("Addition & Subtraction:")
-	#parameter for the while loop
-	param = re.findall("[\+\-\*\/]?(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\+\-\*\/]?", string)
-	#while there is more than one part 
-	while len(param) > 0:
-		#finds the pieces around the sybol + or -
-		line = param[0]
-		#sum the piecies using a for loop
-		answer = float(line[0]) + float(line[1]+line[2])
-		print(answer)
-		#replace the part (pieces of line) in input string with the answer from the operation
-		string = string.replace(str(line[0]) + str(line[1]) + str(line[2]), str(answer))
-		#update pameramter
-		param = re.findall("(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)([\+\-])(\+?\-?\d\.?\d*e\+\d+|\+?\-?\(?\d+\.?\d*\)?)", string)	
-	#return the new string
-	return string
+	#finding all the pieces in the string
+	pieces = re.findall("([+-]?\d+[a-z]?)",string)
+	print(pieces)
+	#string for variables
+	variables = []
+	#sorts out variables in pieces and creats new string with variables
+	#creats an intterative piece of pieces
+	for piece in pieces:
+		#if there is a variable piece
+		if re.findall("[a-z]",piece):
+			print(piece)
+			#creats new string with pieces 
+			variables.append(pieces)
+			#print(variables)
+			#remove the pice (if it contains a variable)
+			pieces.remove(piece)
+	print("pieces:")
+	print(pieces)
+	print("variabels:")
+	print(variables)
+	#########VARIABLES: needs to be string, but cannot append a string, and must put in the right things!
+	answer = sum(float(a) for a in pieces)
+	print(answer)
+	z = "%s" %answer
+	#update string with answer for all added numbers attated to front of string
+	string = z + re.sub("([\+\-]?\d+)[\+\-]","",string)
+	print(string)
+
+
 
 #Parenthisis
 def parenth(string):
@@ -343,8 +359,7 @@ def varSub(input1,input2):
 #MIXED
 
 #variable combined multiplicaiton
-def varMulComb(input1,input2):
-	#print("Variable Combined Multiplicaiton:")
+def varMulComb(input1,input2):	#print("Variable Combined Multiplicaiton:")
 
 	exp = 0
 	coef = 1
@@ -543,6 +558,20 @@ def multiplication(string):
 
 #Division
 def division(string):
+	#while loop to make sure this is done correctly
+	while re.findall("(\-[a-z])",string) or re.findall("\*[a-z]",string) or string[0] == re.findall("[a-z]",string)[0]:
+		#replace -var with -1var
+		if re.findall("(\-[a-z])",string):
+			var = re.findall("\-([a-z])",string)[0]
+			string = string.replace(str(re.findall("(\-[a-z])",string)[0]), "-1%s"%var)
+		#replace var with 1var
+		if re.findall("(\*[a-z])",string):
+			var = re.findall("\*([a-z])",string)[0]
+			string = string.replace(str(re.findall("(\*[a-z])",string)[0]), "*1%s"%var)
+		#if first index is variable then replace it with 1var
+		if string[0] == re.findall("[a-z]",string)[0]:
+			var = string[0]
+			string = string.replace(string[0], "1%s"%var)
 	while "/" in string:
 		#replace -x with -1x
 		if re.findall("(\-[a-z])",string):
@@ -684,8 +713,8 @@ else:
 
 #testing
 #print(varMulComb("2","x"))
-print(multiplication("2*4x^2*-x*x"))
-#print(summation("3x-9x+14-2+2x"))
+#print(multiplication("2*4x^2*-x*x"))
+print(sumNums("2-3x+4-9x+8-11+21x-3-5"))
 #print(varMul("3y","9x"))
 #print(distrib("3x(2*3+2x-4)"))
 
