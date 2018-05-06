@@ -63,8 +63,6 @@ def sumNums(string):
 	string = z + variables
 	return string
 
-
-
 #Parenthisis
 def parenth(string):
 	#print("Parenthisis:")
@@ -151,9 +149,6 @@ def varMul(input1,input2):
 		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
 			#num is equal to the number before the variable
 			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
-
-			#############ADD IN PARENTHISIS INTO REGEX ABOVE (LOOK TO LAST SECTION IN CODE)!!!!!!!
-
 			#if there are parenthisis symplify the inside
 			num = parenth(num)
 			#makes num into numbers with decimals
@@ -163,12 +158,7 @@ def varMul(input1,input2):
 		#if there is a number before the variable in input2
 		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
 			#num is equal to the number before the variable
-			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
-
-
-			#############ADD IN PARENTHISIS INTO REGEX ABOVE (LOOK TO LAST SECTION IN CODE)!!!!!!!
-
-			
+			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]			
 			#if there are parenthisis symplify the inside
 			num = parenth(num)
 			#makes num into numbers with decimals
@@ -185,15 +175,66 @@ def varMul(input1,input2):
 		#answer: combined variables holding the variable parts as strings
 		answer = a+b+c
 
-	#if the variables are not equivalent
-	else:
+	#if the variables in input1 and input2 are not equal:
+	if var1 != var2:
+		#num of variable occerences (exp1 correnlates to var1 and exp2 to variable2)
+		exp1 = input1.count(var1)
+		exp2 = input2.count(var2)
+		#exponents
+		#if there is ^ in input1
+		if re.findall("\^(\-?\d+)",input1):
+			#select the piece that is after the ^ 
+			num = re.findall("\^(\-?\d+|\(.+\))",input1)[0]
+			#if there are parenthisis symplify the inside
+			num = parenth(num)
+			#makes num into numbers with decimals
+			num = float(num)
+			#exp is equal to the former exp value sumed with num, -1 subtracts the extera variable acounted for in the variable amount count
+			exp1 = exp1 + num -1
+		#if there is ^ in input2		
+		if re.findall("\^(\-?\d+)",input2):
+			#select the piece that is after the ^ 
+			num = re.findall("\^(\-?\d+|\(.+\))",input2)[0]
+			#if there are parenthisis symplify the inside
+			num = parenth(num)
+			#makes num into numbers with decimals
+			num = float(num)
+			#exp is equal to the former exp value sumed with num, -1 subtracts the extera variable acounted for in the variable amount count
+			exp2 = exp2 + num -1
+		#coeffients
+		#if there is a number before the variable in input1
+		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
+			#num is equal to the number before the variable
+			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
+			#if there are parenthisis symplify the inside
+			num = parenth(num)
+			#makes num into numbers with decimals
+			num = float(num)
+			#coef is equal to former coef times the number before the variable - num -
+			coef = coef * num
+		#if there is a number before the variable in input2
+		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
+			#num is equal to the number before the variable
+			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]			
+			#if there are parenthisis symplify the inside
+			num = parenth(num)
+			#makes num into numbers with decimals
+			num = float(num)
+			#coef is equal to former coef times the number before the variable - num -
+			coef = coef * num
 		#creating variables = strings that are variables	
-		#a: input1 as string
-		a = "%s" %input1
-		#b: input2 as string
-		b = "%s" %input2
-		#anser: combined variables holding the variable parts as strings (a and b seperated by * symbol)
-		answer = a + "*" + b
+		#coeffiencet value
+		a = "%s" %coef 
+		#the variable 1
+		b = "%s" %var1
+		#extopenet value including ^ (exponent) symbol for variabel 1
+		c = "^%s" %exp1
+		#the variable 2
+		d = "%s" %var2
+		#extopenet value including ^ (exponent) symbol for variabel 2
+		e = "^%s" %exp2
+		#answer: combined variables holding the variable parts as strings
+		answer = a+b+c+d+e
 
 	#returning answer
 	return answer
@@ -218,6 +259,7 @@ def varDiv(input1,input2):
 	if re.findall("(\-[a-z])",input2):
 		input2 = input2.replace(str(re.findall("(\-[a-z])",input2)[0]), "-1%s"%var2)
 
+	#if variables are equall
 	if var1 == var2:
 		#num of variable occerences
 		exp1 = input1.count(var1)
@@ -247,10 +289,38 @@ def varDiv(input1,input2):
 		b = "%s" %var1
 		c = "^%s" %exp
 		answer = a+b+c
-	else: 
-		a = "%s" %input1
-		b = "%s" %input2
-		answer = a + "*" + b
+
+	#if variables are not equall
+	if var1 != var2:
+		#num of variable occerences
+		exp1 = input1.count(var1)
+		exp2 = input2.count(var2)
+		#exponents
+		if re.findall("\^(\-?\d+)",input1):
+			num = re.findall("\^(\-?\d+)",input1)[0]
+			num = float(num)
+			expA = exp1 + num -1 #-1 so that we dont acount for an extera variable from count above
+		else: expA = exp1
+		if re.findall("\^(\-?\d+)",input2):
+			num = re.findall("\^(\-?\d+)",input2)[0]
+			num = float(num)
+			expB = exp2 + num -1
+		else: expB = exp2
+		#coeffients
+		if re.findall("(?<![\^\-])[\-\d\.]+",input1):
+			num = re.findall("(?<![\^\-])[\-\d\.]+",input1)[0]
+			num = float(num)
+			coef = coef * num
+		if re.findall("(?<![\^\-])[\-\d\.]+",input2):
+			num = re.findall("(?<![\^\-])[\-\d\.]+",input2)[0]
+			num = float(num)
+			coef = coef / num
+		a = "%s" %coef
+		b = "%s" %var1
+		c = "^%s" %expA
+		d = "%s" %var2
+		e = "^%s" %expB
+		answer = a+b+c+d+e
 
 	return answer
 
@@ -509,27 +579,43 @@ def multiplication(string):
 		if re.findall("(\-[a-z])",string):
 			var = re.findall("\-([a-z])",string)[0]
 			string = string.replace(str(re.findall("(\-[a-z])",string)[0]), "-1%s"%var)
+			print("1")
+			print("var:")
+			print(var)
+			print("string:")
+			print(string)
 		#replace var with 1var
 		if re.findall("(\*[a-z])",string):
 			var = re.findall("\*([a-z])",string)[0]
 			string = string.replace(str(re.findall("(\*[a-z])",string)[0]), "*1%s"%var)
+			print("2")
+			print("var:")
+			print(var)
+			print("string:")
+			print(string)
 		#if first index is variable then replace it with 1var
 		if string[0] == re.findall("[a-z]",string)[0]:
 			var = string[0]
-			string = string.replace(string[0], "1%s"%var)
+			string = "1%s"%var + string[1:]
+			print("3")
+			print("var:")
+			print(var)
+			print("string:")
+			print(string)
 	print(string)
+	#return string
 	while "*" in string:
 		#if numbers
-		if re.findall("[\+\-\*\/]?(\+?\-?\(?\d+\.?\d*\)?)[\*](\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\+\-\*\/]?",string):
+		if re.findall("(?<!\^)(\+?\-?\d*\.?\d+)\*(\+?\-?\d*\.?\d+)(?![a-z])",string):
 			print("yes")
-			var1 = re.findall("[\*\/]?(\+?\-?\(?\d+\.?\d*\)?)[\*]\+?\-?\(?\d+\.?\d*\)?(?![a-z])[\*\/]?",string)[0]
-			var2 = re.findall("[\*\/]?\+?\-?\(?\d+\.?\d*\)?[\*](\+?\-?\(?\d+\.?\d*\)?)(?![a-z])[\*\/]?",string)[0]
+			var1 = re.findall("(?<!\^)(\+?\-?\d*\.?\d+)\*\+?\-?\d*\.?\d+(?![a-z])",string)[0]
+			var2 = re.findall("(?<!\^)\+?\-?\d*\.?\d+\*(\+?\-?\d*\.?\d+)(?![a-z])",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varA + "*" + varB
 			part = md(part)
 			string = string.replace(var1 + "*" + var2, str(part))
-		print("1:",string)
+			print("1:",string)
 		#if variables
 		if re.findall("(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\*](\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)",string):
 			var1 = re.findall("(?<![\^])(\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)[\*]\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*",string)[0]
@@ -538,17 +624,18 @@ def multiplication(string):
 			varB = exponent(var2)
 			part = varMul(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
-		print("2:",string)
+			print("2:",string)
 		#if number and variable
 		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
 			var1 = re.findall("(?<![\^])(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*]\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*",string)[0]
 			var2 = re.findall("(?<![\^])\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*[\*](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string)[0]
-			print("var1+2:",var1,var2)
+			#print("var1+2:",var1,var2)
 			varA = exponent(var1)
 			varB = exponent(var2)
 			part = varMulComb(varA,varB)
 			string = string.replace(var1 + "*" + var2, str(part))
-		print("3:",string)
+			print("3:",string)
+			#break
 	return(string)
 
 #Division
@@ -645,7 +732,7 @@ def summation(string):
  
 def distrib(string):
 	#print("Distributive Property:")
-	#if something is multiplied by a (..,)
+	#if something is multiplied with (...)
 	if re.findall(TERM + "\(.+\)",string):
 		#term multiplied with (...)
 		outside = re.findall("(\-?\d*\.?\d*[a-z]*\^?\-?\d*\.?\d*[a-z]?)\(.+\)",string)[0]
@@ -671,22 +758,31 @@ def distrib(string):
 		print(answerTerms)
 
 		answerString = ""
-		partString = []
 		if len(answerTerms) == len(operators) + 1:
 			for i in range(len(answerTerms)-1):
+				partString = []
+				if i == 0:
+					print("1")
+				if i == 1:
+					print("2")
+				if i == 2:
+					print("3")
 				partString.append(answerTerms[i]+operators[i])
-				print(operators)
+				#print(operators)
 				print("part of string")
 				print(partString)
 				#answerString.append(partString)
-				answerString+=str(partString) #appends string since append does not work for string
-				##### need to be able to add: +answerTerms[-1] (so last piece of answerTerms onto it too)
+				answerString += str(partString) #appends string since append does not work for string
 				print("answer string:")
 				print(answerString)
-			#####doesnt get out of for loop?!?!?!?!?
+			answerString = answerString + operators[-1] + answerTerms[-1]
+			print("answerString!:")
+			print(answerString)
+			####how do I make answersting print all look the smae and how do I make the code go to line 782 (next line of code following this one...?)
 			answerString = summation(answerString)
 			print("answerString final:")
 			print(answerString)
+			print("DONE")
 			#####needs to be able to do it out of order (ex: 3x+2-2x+10 = 12+x)	
 	return string
 
@@ -708,10 +804,10 @@ else:
 
 #testing
 #print(varMulComb("2","x"))
-#print(multiplication("2*4x^2*-x*x"))
-print(sumNums("3x+4-9x+8-11+21y-3-5"))
-#print(varMul("3y","9x"))
-#print(distrib("3x(2*3+2x-4)"))
+#print(multiplication("x*2*4x^2*2*4.5*-x*x"))
+#print(sumNums("3x+4-9x+8-11+21y-3-5"))
+#print(varMul("2x","4x^4"))
+print(distrib("3x(2*3+2x-4)"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
