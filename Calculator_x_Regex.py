@@ -782,7 +782,7 @@ def distrib(string):
 			answerString = summation(answerString)
 			print("answerString final:")
 			print(answerString)
-			print("DONE")
+			print("DONE!!!!")
 			#####needs to be able to do it out of order (ex: 3x+2-2x+10 = 12+x)	
 	return string
 
@@ -804,10 +804,10 @@ else:
 
 #testing
 #print(varMulComb("2","x"))
-#print(multiplication("x*2*4x^2*2*4.5*-x*x"))
+print(multiplication("x*2*4x^2*2*4.5*-x*x"))
 #print(sumNums("3x+4-9x+8-11+21y-3-5"))
 #print(varMul("2x","4x^4"))
-print(distrib("3x(2*3+2x-4)"))
+#print(distrib("3x(2*3+2x-4)"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
