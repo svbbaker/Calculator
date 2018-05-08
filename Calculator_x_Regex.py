@@ -700,7 +700,28 @@ def summation(string):
 
 #muliplication and division
 def multiplicationDivision(string):
+#print("Multiplication and Division:")
+	#if there is a * or / in the input string then run loop until there is not another
+	while '*' in string or '/' in string:
+		#variable 1: part before the * or / symbol
+		var1 = re.findall("(\-?\d*\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\*\/]",string)[0]
+		#variable 2: part after the * or / symbol
+		var2 = re.findall("[\*\/](\-?\d*\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string)[0]
+		#what symbol is between the variabeles: * or /
+		operator = re.findall("[\*\/]",string)[0]
+		#if multiplication:
+		if operator == '*':
+			var = var1 + '*' + var2
+			answer = multiplication(var)
+		#else if division:
+		elif operator == '/':
+			var = var1 + '*' + var2
+			answer = division(var)
+		#replace the part in input string (var1 sybol var2) with the answer from the operation
+		string = string.replace(var1 + operator + var2, str(answer))
 
+	#return the new string
+	return string
 
 ############################################################################################################################################################################################
 #############################################################################################################################################################################################
