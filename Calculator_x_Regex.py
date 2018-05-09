@@ -649,7 +649,7 @@ def division(string):
 			var2 = re.findall("\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*[\/](\-?\d*\.?\d?[a-z]+\^?\-?\d*\.?\d*)",string)[0]
 			varA = exponent(var1)
 			varB = exponent(var2)
-			part = varMul(varA,varB)
+			part = varDiv(varA,varB)
 			string = string.replace(var1 + "/" + var2, str(part))
 		#if number and variable
 		if re.findall("(\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)[\/](\-?\d+\.?\d*\^?\-?\d*\.?\d*)|(\-?\d+\.?\d*\^?\-?\d*\.?\d*)[\/](\-?\d+\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string):
@@ -658,7 +658,7 @@ def division(string):
 			#print("var1+2:",var1,var2)
 			varA = exponent(var1)
 			varB = exponent(var2)
-			part = varMulComb(varA,varB)
+			part = varDivComb(varA,varB)
 			string = string.replace(var1 + "/" + var2, str(part))
 			break
 	return(string)
@@ -709,14 +709,22 @@ def multiplicationDivision(string):
 		var2 = re.findall("[\*\/](\-?\d*\.?\d*\^?\-?\d*\.?\d*[a-z]?\^?\-?\d*\.?\d*)",string)[0]
 		#what symbol is between the variabeles: * or /
 		operator = re.findall("[\*\/]",string)[0]
+		print(operator)
 		#if multiplication:
 		if operator == '*':
 			var = var1 + '*' + var2
+			print("mul var")
+			print(var)
 			answer = multiplication(var)
+			print(answer)
+			############ CREATE A STRING THAT CATCHES THE ANSWERS!
 		#else if division:
 		elif operator == '/':
-			var = var1 + '*' + var2
+			var = var1 + '/' + var2
+			print("div var")
+			print(var)
 			answer = division(var)
+			print(answer)
 		#replace the part in input string (var1 sybol var2) with the answer from the operation
 		string = string.replace(var1 + operator + var2, str(answer))
 
@@ -787,10 +795,10 @@ else:
 
 #testing
 #print(varMulComb("2","x"))
-#print(multiplication("x*2*4x^2*2*4.5*-x*x"))
+print(multiplicationDivision("2x^2/x*3*4/2"))
 #print(sumNums("3x+4-9x+8-11+21y-3-5"))
 #print(varMul("2x","4x^4"))
-print(distrib("3x(9/3*2+2x-4)"))
+#print(distrib("3x(9/3*2+2x-4)"))
 
 
 ########MAKE IT ALPHABETICAL right before spitting out the answer
