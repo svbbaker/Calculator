@@ -665,15 +665,18 @@ def division(string):
 
 #Summation
 def summation(string):
-	####need to sort it so that can solve 3x-9x+14-2+2x :: currently it can only do 3x-9x+14-2
 	if re.findall(".(\-).",string):
 		minus = True
 	else: minus = False
 
 	while "+" in string in string or minus == True:
+		print(string)
+		print("in")
 		#if numbers 
-		if re.findall("(?<!\^)(\+?\-?\d*\.?\d+)\*(\+?\-?\d*\.?\d+)(?![a-z.\d+])",string):
+		if re.findall("(?<!\^)(\+?\-?\d*\.?\d+)[\+\-](\+?\-?\d*\.?\d+)(?![a-z.\d+])",string):
 			string = sumNums(string)
+			print(string)
+			print("1")
 		#if variables +
 		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
 			input1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-]\-?\d+\.?\d*\^?\d*[a-z]\^?\d*",string)[0]
@@ -681,15 +684,19 @@ def summation(string):
 			#print(input1,input2)
 			part = varAdd(input1,input2)
 			string = string.replace(input1 + "+" + input2, str(part))
-			print("b:")
+			print(string)
+			print("2")
 		#if variables -
 		if re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string):
-			input1 = re.findall("(\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-]\-?\d+\.?\d*\^?\d*[a-z]\^?\d*",string)[0]
-			input2 = re.findall("\-?\d+\.?\d*\^?\d*[a-z]\^?\d*[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
+			input1 = re.findall("(\+?\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)[\+\-]\-?\d+\.?\d*\^?\d*[a-z]\^?\d*",string)[0]
+			input2 = re.findall("\+?\-?\d+\.?\d*\^?\d*[a-z]\^?\d*[\+\-](\-?\d+\.?\d*\^?\d*[a-z]\^?\d*)",string)[0]
 			#print(input1,input2)
 			part = varSub(input1,input2)
 			string = string.replace(input1 + "-" + input2, str(part))
-			break
+			print(string)
+			print("3")
+			#break
+		break
 
 	#return the new string
 	return string
@@ -710,6 +717,7 @@ def multiplicationDivision(string):
 		#what symbol is between the variabeles: * or /
 		operator = re.findall("[\*\/]",string)[0]
 		print(operator)
+		answerString = ""
 		#if multiplication:
 		if operator == '*':
 			var = var1 + '*' + var2
@@ -717,6 +725,9 @@ def multiplicationDivision(string):
 			print(var)
 			answer = multiplication(var)
 			print(answer)
+			##replace the part in input string (var1 sybol var2) with the answer from the operation
+			#string = string.replace(var1 + operator + var2, str(answer))
+
 			############ CREATE A STRING THAT CATCHES THE ANSWERS!
 		#else if division:
 		elif operator == '/':
@@ -725,6 +736,8 @@ def multiplicationDivision(string):
 			print(var)
 			answer = division(var)
 			print(answer)
+			##replace the part in input string (var1 sybol var2) with the answer from the operation
+			#string = string.replace(var1 + operator + var2, str(answer))
 		#replace the part in input string (var1 sybol var2) with the answer from the operation
 		string = string.replace(var1 + operator + var2, str(answer))
 
@@ -795,8 +808,8 @@ else:
 
 #testing
 #print(varMulComb("2","x"))
-print(multiplicationDivision("2x^2/x*3*4/2"))
-#print(sumNums("3x+4-9x+8-11+21y-3-5"))
+#print(multiplicationDivision("2x^2/x*3*4/2"))####gets stuck in multiplication and division functions...
+print(summation("3x+4-9x+8-11+21y+2x-3-5"))##doesn't work with number and variable after y but it does between the 3 and the 5 but also not at end yet in all these senarios it does not solve...
 #print(varMul("2x","4x^4"))
 #print(distrib("3x(9/3*2+2x-4)"))
 
